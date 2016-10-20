@@ -29,7 +29,7 @@
             android:textSize="18sp"
             android:textColor="?attr/editTextColor" />
 
-        <com.selcukcihan.android.expensetracer.CategoryView
+        <com.selcukcihan.android.expensetracer.ui.CategoryView
             android:id="@+id/category"
             android:layout_weight="1"
             android:layout_width="wrap_content"
@@ -94,7 +94,7 @@
             android:layout_margin="1dp"
             android:layout_gravity="right|center_vertical"
             android:clickable="true"
-            android:src="@android:drawable/ic_input_add" />
+            android:src="@drawable/ic_done_white_24dp" />
     </LinearLayout>
     <LinearLayout
         android:id="@+id/linearLayoutDate"

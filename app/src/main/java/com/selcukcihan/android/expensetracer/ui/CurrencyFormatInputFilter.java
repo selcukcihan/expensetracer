@@ -1,4 +1,4 @@
-package com.selcukcihan.android.expensetracer;
+package com.selcukcihan.android.expensetracer.ui;
 
 import android.text.InputFilter;
 import android.text.Spanned;

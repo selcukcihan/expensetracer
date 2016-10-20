@@ -1,0 +1,62 @@
+package com.selcukcihan.android.expensetracer.ui;
+
+import android.content.Context;
+import android.graphics.PorterDuff;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.GridLayout;
+import android.support.v7.widget.LinearLayoutCompat;
+import android.util.AttributeSet;
+import android.view.Gravity;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import com.selcukcihan.android.expensetracer.R;
+
+/**
+ * Created by SELCUKCI on 20.10.2016.
+ */
+
+public class CategoryGridViewItem extends LinearLayout {
+    public CategoryGridViewItem(Context context) {
+        super(context);
+        init();
+    }
+
+    public CategoryGridViewItem(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        init();
+    }
+
+    public CategoryGridViewItem(Context context, AttributeSet attrs, int defStyle) {
+        super(context, attrs, defStyle);
+        init();
+    }
+
+    private void init() {
+        setOrientation(LinearLayout.VERTICAL);
+        //setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+        setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
+
+        ImageView imageView = new ImageView(getContext());
+        imageView.setImageResource(R.drawable.ic_local_atm_white_24dp);
+        //imageView.setLayoutParams(new GridView.LayoutParams(85, 85));
+        imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
+        imageView.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT, 1.0f));
+        imageView.setColorFilter(ContextCompat.getColor(getContext(), R.color.colorAccent), PorterDuff.Mode.MULTIPLY);
+        //imageView.setPadding(8, 8, 8, 8);
+
+        addView(imageView, 0);
+
+        TextView textView = new TextView(getContext());
+        textView.setText("some text");
+        textView.setGravity(Gravity.CENTER);
+        addView(textView, 1);
+    }
+
+    @Override
+    public void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, widthMeasureSpec); // This is the key that will make the height equivalent to its width
+    }
+}

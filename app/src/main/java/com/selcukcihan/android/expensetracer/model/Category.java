@@ -1,4 +1,4 @@
-package com.selcukcihan.android.expensetracer;
+package com.selcukcihan.android.expensetracer.model;
 
 /**
  * Created by SELCUKCI on 18.10.2016.
