@@ -5,7 +5,19 @@ package com.selcukcihan.android.expensetracer.model;
  */
 
 public class Category {
-    public int Id;
-    public String Name;
-    public String Icon;
+    private int mId;
+    private String mName;
+    private int mResourceId;
+    private int mCategoryType;
+
+    public Category(String name, int resourceId, int categoryType) {
+        mName = name;
+        mResourceId = resourceId;
+        mCategoryType = categoryType;
+    }
+
+    public String getName() { return mName; }
+    public int getResourceId() { return mResourceId; }
+    public int getCategoryType() { return mCategoryType; }
+    public int getId() { return mId; }
 }

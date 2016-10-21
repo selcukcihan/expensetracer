@@ -18,6 +18,7 @@ import android.widget.ImageButton;
 import com.selcukcihan.android.expensetracer.CategoryActivity;
 import com.selcukcihan.android.expensetracer.CategorySelectionActivity;
 import com.selcukcihan.android.expensetracer.R;
+import com.selcukcihan.android.expensetracer.TransactionActivity;
 
 /**
  * Created by SELCUKCI on 18.10.2016.
@@ -25,6 +26,7 @@ import com.selcukcihan.android.expensetracer.R;
 
 public class CategoryView extends GridLayout {
     private ImageButton mSelectedButton;
+    private boolean mExpenseType = true;
 
     public CategoryView(Context context) {
         super(context);
@@ -39,6 +41,10 @@ public class CategoryView extends GridLayout {
     public CategoryView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         init();
+    }
+
+    public void setExpense(boolean expense) {
+        mExpenseType = expense;
     }
 
     private void init() {
@@ -109,6 +115,7 @@ public class CategoryView extends GridLayout {
                 } else {
                     if (event.getAction() == MotionEvent.ACTION_UP) {
                         Intent i = new Intent(getContext(), CategorySelectionActivity.class);
+                        i.putExtra(TransactionActivity.EXTRA_CATEGORY_TYPE, mExpenseType);
                         ((Activity) getContext()).startActivityForResult(i, 1);
                     }
                 }

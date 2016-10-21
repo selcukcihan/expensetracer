@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_category"
     android:layout_width="match_parent"
@@ -9,9 +10,28 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.selcukcihan.android.expensetracer.CategoryActivity">
+    <GridView
+        android:id="@+id/gridIcon"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:numColumns="4"
+        android:verticalSpacing="2dp"
+        android:horizontalSpacing="2dp"
+        android:layout_alignParentLeft="true">
+    </GridView>
+    <View
+        android:id="@+id/line"
+        android:layout_width="fill_parent"
+        android:layout_height="2dp"
+        android:layout_below="@id/gridIcon"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@color/colorPrimary"/>
     <LinearLayout
         android:orientation="horizontal"
         android:id="@+id/linearLayoutCompat"
+        android:layout_below="@id/line"
+        android:layout_above="@+id/fabSave"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -58,4 +78,15 @@
         </RadioGroup>
 
     </LinearLayout>
+    <android.support.design.widget.FloatingActionButton
+        android:id="@id/fabSave"
+        app:fabSize="normal"
+        android:tint="@android:color/white"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="1dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:clickable="true"
+        android:src="@drawable/ic_done_white_24dp" />
 </RelativeLayout>

@@ -11,11 +11,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.RadioButton;
 import android.widget.Toast;
 
 import com.selcukcihan.android.expensetracer.ui.CategoryAdapter;
 
 public class CategorySelectionActivity extends AppCompatActivity {
+    public final static String EXTRA_CATEGORY_TYPE = "com.selcukcihan.android.expensetracer.CATEGORY_SELECTION_EXTRA_CATEGORY_TYPE";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,9 +45,19 @@ public class CategorySelectionActivity extends AppCompatActivity {
         fabNew.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent i = new Intent(CategorySelectionActivity.this, CategoryActivity.class);
+                i.putExtra(CategorySelectionActivity.EXTRA_CATEGORY_TYPE, ((RadioButton)findViewById(R.id.btnExpenseType)).isChecked());
                 startActivityForResult(i, 1);
             }
         });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Intent intent = getIntent();
+        boolean expense = intent.getBooleanExtra(TransactionActivity.EXTRA_CATEGORY_TYPE, true);
+        ((RadioButton)findViewById(R.id.btnExpenseType)).setChecked(expense);
+        ((RadioButton)findViewById(R.id.btnIncomeType)).setChecked(!expense);
     }
 
     @Override
@@ -59,7 +71,7 @@ public class CategorySelectionActivity extends AppCompatActivity {
                 //Write your code if there's no result
             }
         }
-    }//onActivityResult
+    }
 
     public void onRadioButtonClicked(View view) {
     }
