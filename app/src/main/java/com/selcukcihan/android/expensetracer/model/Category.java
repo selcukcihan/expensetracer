@@ -1,5 +1,7 @@
 package com.selcukcihan.android.expensetracer.model;
 
+import com.selcukcihan.android.expensetracer.R;
+
 /**
  * Created by SELCUKCI on 18.10.2016.
  */
@@ -8,16 +10,56 @@ public class Category {
     private int mId;
     private String mName;
     private int mResourceId;
-    private int mCategoryType;
+    private CategoryType mCategoryType;
 
-    public Category(String name, int resourceId, int categoryType) {
+    public enum CategoryType {
+        INCOME(0), EXPENSE(1);
+
+        private final int mValue;
+        private CategoryType(int value) {
+            this.mValue = value;
+        }
+
+        public int getValue() {
+            return mValue;
+        }
+
+        public static CategoryType fromInt(int i) {
+            for (CategoryType c : CategoryType.values()) {
+                if (c.getValue() == i) { return c; }
+            }
+            return null;
+        }
+    }
+
+    public Category(String name, int resourceId, CategoryType categoryType) {
         mName = name;
         mResourceId = resourceId;
         mCategoryType = categoryType;
     }
 
+    public Category(String name, int resourceId, CategoryType categoryType, int categoryId) {
+        this(name, resourceId, categoryType);
+        mId = categoryId;
+    }
+
     public String getName() { return mName; }
     public int getResourceId() { return mResourceId; }
-    public int getCategoryType() { return mCategoryType; }
+    public CategoryType getCategoryType() { return mCategoryType; }
     public int getId() { return mId; }
+
+    public static final Category[] DEFAULT_EXPENSE_CATEGORIES = new Category[] {
+            new Category("Market", R.drawable.ic_shopping_cart_white_24dp, CategoryType.EXPENSE),
+            new Category("Health", R.drawable.ic_local_hospital_white_24dp, CategoryType.EXPENSE),
+            new Category("Transportation", R.drawable.ic_train_white_24dp, CategoryType.EXPENSE),
+            new Category("Clothing", R.drawable.ic_shopping_basket_white_24dp, CategoryType.EXPENSE),
+            new Category("Gas", R.drawable.ic_local_gas_station_white_24dp, CategoryType.EXPENSE),
+            new Category("Bills", R.drawable.ic_description_white_24dp, CategoryType.EXPENSE),
+            new Category("Eating out", R.drawable.ic_restaurant_white_24dp, CategoryType.EXPENSE)
+    };
+
+    public static final Category[] DEFAULT_INCOME_CATEGORIES = new Category[] {
+            new Category("Salary", R.drawable.ic_local_atm_white_24dp, CategoryType.INCOME),
+            new Category("Gift", R.drawable.ic_redeem_white_24dp, CategoryType.INCOME)
+    };
 }

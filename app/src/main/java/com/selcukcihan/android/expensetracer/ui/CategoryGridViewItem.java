@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.selcukcihan.android.expensetracer.R;
+import com.selcukcihan.android.expensetracer.model.Category;
 
 /**
  * Created by SELCUKCI on 20.10.2016.
@@ -21,26 +22,23 @@ import com.selcukcihan.android.expensetracer.R;
 public class CategoryGridViewItem extends LinearLayout {
     public CategoryGridViewItem(Context context) {
         super(context);
-        init();
     }
 
     public CategoryGridViewItem(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init();
     }
 
     public CategoryGridViewItem(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        init();
     }
 
-    private void init() {
+    public void init(Category category) {
         setOrientation(LinearLayout.VERTICAL);
         //setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
         setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
 
         ImageView imageView = new ImageView(getContext());
-        imageView.setImageResource(R.drawable.ic_local_atm_white_24dp);
+        imageView.setImageResource(category.getResourceId());
         //imageView.setLayoutParams(new GridView.LayoutParams(85, 85));
         imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
         imageView.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT, 1.0f));
@@ -50,7 +48,7 @@ public class CategoryGridViewItem extends LinearLayout {
         addView(imageView, 0);
 
         TextView textView = new TextView(getContext());
-        textView.setText("some text");
+        textView.setText(category.getName());
         textView.setGravity(Gravity.CENTER);
         addView(textView, 1);
     }
