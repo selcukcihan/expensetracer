@@ -7,7 +7,7 @@ import com.selcukcihan.android.expensetracer.R;
  */
 
 public class Category {
-    private int mId;
+    private Long mId;
     private String mName;
     private int mResourceId;
     private CategoryType mCategoryType;
@@ -38,7 +38,7 @@ public class Category {
         mCategoryType = categoryType;
     }
 
-    public Category(String name, int resourceId, CategoryType categoryType, int categoryId) {
+    public Category(String name, int resourceId, CategoryType categoryType, long categoryId) {
         this(name, resourceId, categoryType);
         mId = categoryId;
     }
@@ -46,7 +46,18 @@ public class Category {
     public String getName() { return mName; }
     public int getResourceId() { return mResourceId; }
     public CategoryType getCategoryType() { return mCategoryType; }
-    public int getId() { return mId; }
+    public long getId() {
+        if (mId == null) {
+            throw new IllegalStateException("Category id not set.");
+        }
+        return mId;
+    }
+    public void setId(long id) {
+        if (mId != null) {
+            throw new IllegalStateException("Category already set. Original value: " + mId + ", New value: " + id);
+        }
+        mId = id;
+    }
 
     public static final Category[] DEFAULT_EXPENSE_CATEGORIES = new Category[] {
             new Category("Market", R.drawable.ic_shopping_cart_white_24dp, CategoryType.EXPENSE),

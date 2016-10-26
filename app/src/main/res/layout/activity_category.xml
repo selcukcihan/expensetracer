@@ -51,6 +51,8 @@
             android:layout_height="wrap_content"
             android:inputType="textShortMessage"
             android:maxLines="1"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
             android:hint="Category"
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
@@ -67,14 +69,12 @@
             <RadioButton android:id="@+id/btnExpenseType"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Expense"
-                android:onClick="onRadioButtonClicked"/>
+                android:text="Expense" />
 
             <RadioButton android:id="@+id/btnIncomeType"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Income"
-                android:onClick="onRadioButtonClicked"/>
+                android:text="Income" />
         </RadioGroup>
 
     </LinearLayout>

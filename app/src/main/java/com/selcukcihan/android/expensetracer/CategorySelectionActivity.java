@@ -14,10 +14,15 @@ import android.widget.GridView;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
+import com.selcukcihan.android.expensetracer.model.Category;
 import com.selcukcihan.android.expensetracer.ui.CategoryAdapter;
+import com.selcukcihan.android.expensetracer.viewmodel.CategoryViewModel;
 
 public class CategorySelectionActivity extends AppCompatActivity {
     public final static String EXTRA_CATEGORY_TYPE = "com.selcukcihan.android.expensetracer.CATEGORY_SELECTION_EXTRA_CATEGORY_TYPE";
+    public final static String EXTRA_CATEGORY_ID = "com.selcukcihan.android.expensetracer.CATEGORY_SELECTION_EXTRA_CATEGORY_ID";
+    private final static int CATEGORY_ACTIVITY_NEW_REQUEST_CODE = 1;
+    private final static int CATEGORY_ACTIVITY_EDIT_REQUEST_CODE = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +51,7 @@ public class CategorySelectionActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent i = new Intent(CategorySelectionActivity.this, CategoryActivity.class);
                 i.putExtra(CategorySelectionActivity.EXTRA_CATEGORY_TYPE, ((RadioButton)findViewById(R.id.btnExpenseType)).isChecked());
-                startActivityForResult(i, 1);
+                startActivityForResult(i, CATEGORY_ACTIVITY_NEW_REQUEST_CODE);
             }
         });
     }
@@ -88,12 +93,15 @@ public class CategorySelectionActivity extends AppCompatActivity {
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        View view = info.targetView;
         switch(item.getItemId()) {
             case R.id.edit:
-                // edit stuff here
+                Intent i = new Intent(CategorySelectionActivity.this, CategoryActivity.class);
+                i.putExtra(CategorySelectionActivity.EXTRA_CATEGORY_ID, ((Category)view.getTag()).getId());
+                startActivityForResult(i, CATEGORY_ACTIVITY_EDIT_REQUEST_CODE);
                 return true;
             case R.id.delete:
-                // remove stuff here
+                new CategoryViewModel(this).deleteCategory((Category)view.getTag());
                 return true;
             default:
                 return super.onContextItemSelected(item);

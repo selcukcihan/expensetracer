@@ -22,7 +22,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>-->
         </activity>
-        <activity android:name=".CategoryActivity"></activity>
+        <activity android:name=".CategoryActivity">
+
+        </activity>
 
         <provider android:name="com.selcukcihan.android.expensetracer.db.CategoryProvider" android:authorities="com.selcukcihan.android.expensetracer.provider"/>
 

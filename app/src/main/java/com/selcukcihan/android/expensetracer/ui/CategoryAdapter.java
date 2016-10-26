@@ -5,7 +5,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
-import com.selcukcihan.android.expensetracer.db.ExpenseTracerDbHelper;
 import com.selcukcihan.android.expensetracer.model.Category;
 import com.selcukcihan.android.expensetracer.viewmodel.CategoryViewModel;
 
@@ -21,7 +20,7 @@ public class CategoryAdapter extends BaseAdapter {
     public CategoryAdapter(Context c) {
         mContext = c;
         CategoryViewModel viewModel = new CategoryViewModel(c);
-        mCategories = viewModel.GetCategories(Category.CategoryType.EXPENSE);
+        mCategories = viewModel.getCategories(Category.CategoryType.EXPENSE);
     }
 
     public int getCount() {
@@ -46,8 +45,6 @@ public class CategoryAdapter extends BaseAdapter {
         } else {
             view = (CategoryGridViewItem) convertView;
         }
-
-        //layout.setImageResource(mThumbIds[position]);
         return view;
     }
 }

@@ -17,7 +17,8 @@ import com.selcukcihan.android.expensetracer.R;
 
 public class CategoryIconAdapter extends BaseAdapter {
     private Context mContext;
-
+    private ImageView mSelection;
+    private Integer mSelectedResourceId = null;
     // Constructor
     public CategoryIconAdapter(Context c) {
         mContext = c;
@@ -35,6 +36,16 @@ public class CategoryIconAdapter extends BaseAdapter {
         return 0;
     }
 
+    public void setSelectedIcon(int resourceId)
+    {
+        mSelectedResourceId = resourceId;
+        notifyDataSetChanged();
+    }
+
+    public int getSelectedIcon() {
+        return (int)mSelection.getTag();
+    }
+
     // create a new ImageView for each item referenced by the Adapter
     public View getView(int position, View convertView, ViewGroup parent) {
         CategoryIconGridViewItem imageView;
@@ -42,9 +53,8 @@ public class CategoryIconAdapter extends BaseAdapter {
         if (convertView == null) {
             imageView = new CategoryIconGridViewItem(mContext);
             imageView.setOnClickListener(new View.OnClickListener() {
-                private ImageView mSelection;
                 public void onClick(View v) {
-                    ImageView view = (ImageView)v;
+                    ImageView view = (ImageView) v;
                     if (mSelection == null) {
                         mSelection = view;
                         view.setColorFilter(ContextCompat.getColor(mContext, R.color.colorAccent), PorterDuff.Mode.MULTIPLY);
@@ -59,7 +69,13 @@ public class CategoryIconAdapter extends BaseAdapter {
             });
 
             imageView.setImageResource(mIconResources[position]);
-            imageView.setColorFilter(ContextCompat.getColor(mContext, R.color.colorPrimaryDark), PorterDuff.Mode.MULTIPLY);
+            imageView.setTag(mIconResources[position]);
+            if (mSelectedResourceId != null && mSelectedResourceId.equals(mIconResources[position])) {
+                imageView.setColorFilter(ContextCompat.getColor(mContext, R.color.colorAccent), PorterDuff.Mode.MULTIPLY);
+                mSelection = imageView;
+            } else {
+                imageView.setColorFilter(ContextCompat.getColor(mContext, R.color.colorPrimaryDark), PorterDuff.Mode.MULTIPLY);
+            }
             imageView.setScaleType(ImageView.ScaleType.CENTER);
         }
         else
@@ -70,17 +86,17 @@ public class CategoryIconAdapter extends BaseAdapter {
     }
 
     private Integer[] mIconResources = {
-            R.drawable.ic_train_white_24dp,
-            R.drawable.ic_school_white_24dp,
-            R.drawable.ic_restaurant_white_24dp,
-            R.drawable.ic_location_city_white_24dp,
-            R.drawable.ic_local_atm_white_24dp,
-            R.drawable.ic_child_friendly_white_24dp,
-            R.drawable.ic_cake_white_24dp,
             R.drawable.ic_beach_access_white_24dp,
-            R.drawable.ic_airport_shuttle_white_24dp,
-            R.drawable.ic_redeem_white_24dp,
+            R.drawable.ic_child_friendly_white_24dp,
             R.drawable.ic_computer_white_24dp,
-            R.drawable.ic_home_white_24dp
+            R.drawable.ic_home_white_24dp,
+            R.drawable.ic_local_atm_white_24dp,
+            R.drawable.ic_local_gas_station_white_24dp,
+            R.drawable.ic_local_hospital_white_24dp,
+            R.drawable.ic_redeem_white_24dp,
+            R.drawable.ic_restaurant_white_24dp,
+            R.drawable.ic_school_white_24dp,
+            R.drawable.ic_shopping_cart_white_24dp,
+            R.drawable.ic_train_white_24dp
     };
 }

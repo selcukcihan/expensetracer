@@ -12,6 +12,7 @@ import com.selcukcihan.android.expensetracer.ui.CurrencyFormatInputFilter;
 
 public class TransactionActivity extends AppCompatActivity {
     public final static String EXTRA_CATEGORY_TYPE = "com.selcukcihan.android.expensetracer.TRANSACTION_EXTRA_CATEGORY_TYPE";
+    public final static String EXTRA_CATEGORY_ID = "com.selcukcihan.android.expensetracer.TRANSACTION_EXTRA_CATEGORY_ID";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

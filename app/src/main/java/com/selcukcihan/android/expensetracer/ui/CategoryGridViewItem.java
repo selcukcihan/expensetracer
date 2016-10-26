@@ -34,16 +34,14 @@ public class CategoryGridViewItem extends LinearLayout {
 
     public void init(Category category) {
         setOrientation(LinearLayout.VERTICAL);
-        //setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
         setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
 
         ImageView imageView = new ImageView(getContext());
         imageView.setImageResource(category.getResourceId());
-        //imageView.setLayoutParams(new GridView.LayoutParams(85, 85));
         imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
         imageView.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT, 1.0f));
-        imageView.setColorFilter(ContextCompat.getColor(getContext(), R.color.colorAccent), PorterDuff.Mode.MULTIPLY);
-        //imageView.setPadding(8, 8, 8, 8);
+        imageView.setColorFilter(ContextCompat.getColor(getContext(), R.color.colorPrimaryDark), PorterDuff.Mode.MULTIPLY);
+        imageView.setPadding(8, 8, 8, 8);
 
         addView(imageView, 0);
 
@@ -51,6 +49,8 @@ public class CategoryGridViewItem extends LinearLayout {
         textView.setText(category.getName());
         textView.setGravity(Gravity.CENTER);
         addView(textView, 1);
+
+        setTag(category);
     }
 
     @Override
