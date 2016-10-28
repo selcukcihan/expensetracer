@@ -17,10 +17,10 @@ import java.util.List;
 public class CategoryAdapter extends BaseAdapter {
     private Context mContext;
     private List<Category> mCategories;
-    public CategoryAdapter(Context c) {
+    public CategoryAdapter(Context c, Category.CategoryType categoryType) {
         mContext = c;
         CategoryViewModel viewModel = new CategoryViewModel(c);
-        mCategories = viewModel.getCategories(Category.CategoryType.EXPENSE);
+        mCategories = viewModel.getCategories(categoryType);
     }
 
     public int getCount() {

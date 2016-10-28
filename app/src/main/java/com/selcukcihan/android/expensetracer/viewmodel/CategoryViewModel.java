@@ -37,13 +37,13 @@ public class CategoryViewModel {
         List<Category> categories = new LinkedList<>();
         Cursor c = mContext.getContentResolver().query(uri, projection, null, null, null);
         while (c.moveToNext()) {
-            categories.add(new Category(c.getString(0), c.getInt(1), Category.CategoryType.fromInt(c.getInt(2)), c.getInt(3)));
+            categories.add(new Category(c.getString(0), c.getInt(1), Category.CategoryType.fromInt(c.getInt(2)), c.getLong(3)));
         }
         c.close();
         return categories;
     }
 
-    public Category getCategoryById(int id) {
+    public Category getCategoryById(long id) {
         Uri uri = ContentUris.withAppendedId(CategoryProvider.CATEGORY_CONTENT_URI, id);
 
         String[] projection = {
@@ -67,10 +67,11 @@ public class CategoryViewModel {
 
     public void deleteCategory(Category category) {
         String selectionClause = ExpenseContract.CategoryTable.COLUMN_NAME_CATEGORY_ID +  "= ?";
-        String[] selectionArgs = {String.format("%ld", category.getId())};
+        String[] selectionArgs = {String.format("%d", category.getId())};
 
         Uri uri = ContentUris.withAppendedId(CategoryProvider.CATEGORY_CONTENT_URI, category.getId());
         int rowsDeleted = mContext.getContentResolver().delete(uri, selectionClause, selectionArgs);
+        assert rowsDeleted == 1 : "category table delete primary key violation";
     }
 
     public long putCategory(Category category) {
@@ -88,16 +89,14 @@ public class CategoryViewModel {
         ContentValues values = new ContentValues();
 
         String selectionClause = ExpenseContract.CategoryTable.COLUMN_NAME_CATEGORY_ID +  "= ?";
-        String[] selectionArgs = {String.format("%ld", category.getId())};
-
-        int rowsUpdated = 0;
+        String[] selectionArgs = {String.format("%d", category.getId())};
 
         values.put(ExpenseContract.CategoryTable.COLUMN_NAME_CATEGORY_TYPE, category.getCategoryType().getValue());
         values.put(ExpenseContract.CategoryTable.COLUMN_NAME_NAME, category.getName());
         values.put(ExpenseContract.CategoryTable.COLUMN_NAME_RESOURCE_ID, category.getResourceId());
 
         Uri uri = ContentUris.withAppendedId(CategoryProvider.CATEGORY_CONTENT_URI, category.getId());
-        rowsUpdated = mContext.getContentResolver().update(uri, values, selectionClause, selectionArgs);
+        int rowsUpdated = mContext.getContentResolver().update(uri, values, selectionClause, selectionArgs);
         assert rowsUpdated == 1 : "category table update primary key violation";
     }
 }

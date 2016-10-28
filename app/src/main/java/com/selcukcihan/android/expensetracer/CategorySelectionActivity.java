@@ -34,13 +34,14 @@ public class CategorySelectionActivity extends AppCompatActivity {
 
     private void init() {
         GridView gridView = (GridView)findViewById(R.id.gridCategory);
-        gridView.setAdapter(new CategoryAdapter(this));
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View v,
-                                    int position, long id) {
-                Toast.makeText(CategorySelectionActivity.this, "" + position,
-                        Toast.LENGTH_SHORT).show();
+            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+                Category category = (Category)v.getTag();
+                Intent returnIntent = new Intent();
+                returnIntent.putExtra(TransactionActivity.EXTRA_CATEGORY_ID, category.getId());
+                setResult(Activity.RESULT_OK, returnIntent);
+                finish();
             }
         });
 
@@ -60,25 +61,33 @@ public class CategorySelectionActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         Intent intent = getIntent();
-        boolean expense = intent.getBooleanExtra(TransactionActivity.EXTRA_CATEGORY_TYPE, true);
-        ((RadioButton)findViewById(R.id.btnExpenseType)).setChecked(expense);
-        ((RadioButton)findViewById(R.id.btnIncomeType)).setChecked(!expense);
+        Category.CategoryType categorType = Category.CategoryType.fromInt(intent.getIntExtra(TransactionActivity.EXTRA_CATEGORY_TYPE, -1));
+        ((RadioButton)findViewById(R.id.btnExpenseType)).setChecked(categorType == Category.CategoryType.EXPENSE);
+        ((RadioButton)findViewById(R.id.btnIncomeType)).setChecked(categorType == Category.CategoryType.INCOME);
+
+        ((GridView)findViewById(R.id.gridCategory)).setAdapter(new CategoryAdapter(this, categorType));
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        if (requestCode == 1) {
+        if (requestCode == CATEGORY_ACTIVITY_EDIT_REQUEST_CODE) {
             if(resultCode == Activity.RESULT_OK){
-                String result=data.getStringExtra("result");
-            }
-            if (resultCode == Activity.RESULT_CANCELED) {
+                assert data.hasExtra(TransactionActivity.EXTRA_CATEGORY_ID) : "CategoryActivity should post back category id";
+                long categoryId = data.getLongExtra(TransactionActivity.EXTRA_CATEGORY_ID, -1);
+                Intent returnIntent = new Intent();
+                returnIntent.putExtra(TransactionActivity.EXTRA_CATEGORY_ID, categoryId);
+                setResult(Activity.RESULT_OK, returnIntent);
+                finish();
+            } else if (resultCode == Activity.RESULT_CANCELED) {
                 //Write your code if there's no result
             }
         }
     }
 
     public void onRadioButtonClicked(View view) {
+        ((GridView)findViewById(R.id.gridCategory)).setAdapter(new CategoryAdapter(this,
+                ((RadioButton)findViewById(R.id.btnExpenseType)).isChecked() ? Category.CategoryType.EXPENSE : Category.CategoryType.INCOME));
     }
 
     @Override
@@ -102,6 +111,8 @@ public class CategorySelectionActivity extends AppCompatActivity {
                 return true;
             case R.id.delete:
                 new CategoryViewModel(this).deleteCategory((Category)view.getTag());
+                ((CategoryAdapter)((GridView)findViewById(R.id.gridCategory)).getAdapter()).notifyDataSetChanged();
+                ((GridView)findViewById(R.id.gridCategory)).setAdapter((CategoryAdapter)((GridView)findViewById(R.id.gridCategory)).getAdapter());
                 return true;
             default:
                 return super.onContextItemSelected(item);

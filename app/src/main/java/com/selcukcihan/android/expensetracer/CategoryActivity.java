@@ -3,15 +3,19 @@ package com.selcukcihan.android.expensetracer;
 import android.app.Activity;
 import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.RadioButton;
+import android.widget.TextView;
 
 import com.selcukcihan.android.expensetracer.model.Category;
 import com.selcukcihan.android.expensetracer.ui.CategoryIconAdapter;
+import com.selcukcihan.android.expensetracer.ui.CategoryObserver;
+import com.selcukcihan.android.expensetracer.ui.CategoryView;
 import com.selcukcihan.android.expensetracer.viewmodel.CategoryViewModel;
 
 public class CategoryActivity extends AppCompatActivity {
@@ -33,7 +37,7 @@ public class CategoryActivity extends AppCompatActivity {
             ((RadioButton)findViewById(R.id.btnExpenseType)).setChecked(expense);
             ((RadioButton)findViewById(R.id.btnIncomeType)).setChecked(!expense);
         } else {
-            int id = intent.getIntExtra(CategorySelectionActivity.EXTRA_CATEGORY_ID, -1);
+            long id = intent.getLongExtra(CategorySelectionActivity.EXTRA_CATEGORY_ID, -1);
             CategoryViewModel viewModel = new CategoryViewModel(this);
             Category category = viewModel.getCategoryById(id);
 
@@ -43,6 +47,9 @@ public class CategoryActivity extends AppCompatActivity {
             ((CategoryIconAdapter)((GridView)findViewById(R.id.gridIcon)).getAdapter()).setSelectedIcon(category.getResourceId());
             ((EditText)findViewById(R.id.categoryName)).setText(category.getName());
         }
+
+        findViewById(R.id.categoryTypeStrip).setBackgroundColor(ContextCompat.getColor(this,
+                ((RadioButton)findViewById(R.id.btnExpenseType)).isChecked() ? R.color.colorExpense : R.color.colorIncome));
     }
 
     private void init() {
@@ -81,4 +88,8 @@ public class CategoryActivity extends AppCompatActivity {
         });
     }
 
+    public void onRadioButtonClicked(View view) {
+        findViewById(R.id.categoryTypeStrip).setBackgroundColor(ContextCompat.getColor(this,
+                ((RadioButton)findViewById(R.id.btnExpenseType)).isChecked() ? R.color.colorExpense : R.color.colorIncome));
+    }
 }

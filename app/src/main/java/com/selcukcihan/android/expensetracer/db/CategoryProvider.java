@@ -30,7 +30,7 @@ public class CategoryProvider extends ContentProvider {
     public static final String AUTHORITY = "com.selcukcihan.android.expensetracer.provider";
     public static final String CATEGORY_BASE_PATH = "category";
     public static final String CATEGORY_INCOME_PATH = CATEGORY_BASE_PATH + "/income";
-    public static final String CATEGORY_EXPENSE_PATH = CATEGORY_BASE_PATH + "expense";
+    public static final String CATEGORY_EXPENSE_PATH = CATEGORY_BASE_PATH + "/expense";
 
     public static final Uri CATEGORY_INCOME_CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/" + CATEGORY_INCOME_PATH);
     public static final Uri CATEGORY_EXPENSE_CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/" + CATEGORY_EXPENSE_PATH);
@@ -98,7 +98,17 @@ public class CategoryProvider extends ContentProvider {
 
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
-        return 0;
+        SQLiteDatabase db = mDbHelper.getWritableDatabase();
+        int rowCount = 0;
+        switch (sUriMatcher.match(uri)) {
+            case CATEGORY_WITH_ID:
+                rowCount = db.delete(ExpenseContract.CategoryTable.TABLE_NAME, selection, selectionArgs);
+                getContext().getContentResolver().notifyChange(uri, null);
+                break;
+            default:
+                break;
+        }
+        return rowCount;
     }
 
     @Override

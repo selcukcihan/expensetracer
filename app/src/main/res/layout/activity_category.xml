@@ -20,17 +20,17 @@
         android:layout_alignParentLeft="true">
     </GridView>
     <View
-        android:id="@+id/line"
+        android:id="@+id/categoryTypeStrip"
         android:layout_width="fill_parent"
-        android:layout_height="2dp"
+        android:layout_height="10dp"
         android:layout_below="@id/gridIcon"
         android:layout_marginBottom="8dp"
         android:layout_marginTop="8dp"
-        android:background="@color/colorPrimary"/>
+        android:background="@color/colorExpense"/>
     <LinearLayout
         android:orientation="horizontal"
         android:id="@+id/linearLayoutCompat"
-        android:layout_below="@id/line"
+        android:layout_below="@id/categoryTypeStrip"
         android:layout_above="@+id/fabSave"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -69,12 +69,14 @@
             <RadioButton android:id="@+id/btnExpenseType"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Expense" />
+                android:text="Expense"
+                android:onClick="onRadioButtonClicked"/>
 
             <RadioButton android:id="@+id/btnIncomeType"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Income" />
+                android:text="Income"
+                android:onClick="onRadioButtonClicked"/>
         </RadioGroup>
 
     </LinearLayout>
