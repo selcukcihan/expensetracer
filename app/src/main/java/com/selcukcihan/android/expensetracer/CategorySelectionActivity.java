@@ -18,7 +18,7 @@ import com.selcukcihan.android.expensetracer.model.Category;
 import com.selcukcihan.android.expensetracer.ui.CategoryAdapter;
 import com.selcukcihan.android.expensetracer.viewmodel.CategoryViewModel;
 
-public class CategorySelectionActivity extends AppCompatActivity {
+public class CategorySelectionActivity extends DrawerActivity {
     public final static String EXTRA_CATEGORY_TYPE = "com.selcukcihan.android.expensetracer.CATEGORY_SELECTION_EXTRA_CATEGORY_TYPE";
     public final static String EXTRA_CATEGORY_ID = "com.selcukcihan.android.expensetracer.CATEGORY_SELECTION_EXTRA_CATEGORY_ID";
     private final static int CATEGORY_ACTIVITY_NEW_REQUEST_CODE = 1;

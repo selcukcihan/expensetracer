@@ -18,7 +18,7 @@ import com.selcukcihan.android.expensetracer.ui.CategoryObserver;
 import com.selcukcihan.android.expensetracer.ui.CategoryView;
 import com.selcukcihan.android.expensetracer.viewmodel.CategoryViewModel;
 
-public class CategoryActivity extends AppCompatActivity {
+public class CategoryActivity extends DrawerActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

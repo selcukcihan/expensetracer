@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 
 import com.selcukcihan.android.expensetracer.CategoryActivity;
 import com.selcukcihan.android.expensetracer.CategorySelectionActivity;
@@ -111,7 +112,7 @@ public class CategoryView extends GridLayout {
                 row++;
             }
         }
-        addButton(rows[row], cols[col], category, R.drawable.abc_ic_menu_moreoverflow_mtrl_alpha, false);
+        addButton(rows[row], cols[col], null, R.drawable.abc_ic_menu_moreoverflow_mtrl_alpha, false);
         while (count < maxCount) {
             addSpace(rows[row], cols[col]);
             count++;
@@ -129,26 +130,31 @@ public class CategoryView extends GridLayout {
         GridLayout.LayoutParams layoutParams = new GridLayout.LayoutParams(row, column);
         layoutParams.setGravity(Gravity.FILL);
         layoutParams.width = 0;
-        layoutParams.height = 5;
+        layoutParams.height = 1;
         view.setLayoutParams(layoutParams);
         addView(view);
         return view;
     }
 
     private void init() {
-        setUseDefaultMargins(true);
-        setAlignmentMode(GridLayout.ALIGN_BOUNDS);
+        //setUseDefaultMargins(false);
+        //setAlignmentMode(GridLayout.ALIGN_MARGINS);
+        //setAlignmentMode(GridLayout.FILL);
 
         setColumnCount(mColCount);
         setRowCount(mRowCount);
     }
 
     private void selectionChanged(ImageButton b) {
-        mSelectedButton = b;
+        if (mSelectedButton != null) {
+            mSelectedButton.getDrawable().setColorFilter(ContextCompat.getColor(getContext(), R.color.colorPrimaryDark), PorterDuff.Mode.MULTIPLY);
+        }
         if (mObserver != null) {
             mObserver.onCategoryChanged(((Category)b.getTag()));
         }
-        mSelectedButton.getDrawable().setColorFilter(ContextCompat.getColor(getContext(), R.color.colorAccent), PorterDuff.Mode.MULTIPLY);
+        b.getDrawable().setColorFilter(ContextCompat.getColor(getContext(), R.color.colorAccent), PorterDuff.Mode.MULTIPLY);
+
+        mSelectedButton = b;
     }
 
     private ImageButton addButton(Spec row, Spec column, Category category, int resourceId, boolean selected) {
@@ -172,12 +178,7 @@ public class CategoryView extends GridLayout {
                     switch (event.getAction()) {
                         case MotionEvent.ACTION_DOWN: {
                             if (mSelectedButton != button) {
-                                if (mSelectedButton != null) {
-                                    mSelectedButton.getDrawable().setColorFilter(ContextCompat.getColor(getContext(), R.color.colorPrimaryDark), PorterDuff.Mode.MULTIPLY);
-                                    mSelectedButton.invalidate();
-                                }
                                 selectionChanged(button);
-                                mSelectedButton.invalidate();
                             }
                             break;
                         }
@@ -199,7 +200,7 @@ public class CategoryView extends GridLayout {
         GridLayout.LayoutParams layoutParams = new GridLayout.LayoutParams(row, column);
         layoutParams.setGravity(Gravity.FILL);
         layoutParams.width = 0;
-        layoutParams.height = 5;
+        layoutParams.height = 1;
         b.setLayoutParams(layoutParams);
         addView(b);
         return b;

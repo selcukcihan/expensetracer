@@ -3,7 +3,7 @@ package com.selcukcihan.android.expensetracer;
 import android.app.Activity;
 import android.content.Intent;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v4.widget.DrawerLayout;
 import android.os.Bundle;
 import android.text.InputFilter;
 import android.view.View;
@@ -17,7 +17,7 @@ import com.selcukcihan.android.expensetracer.ui.CategoryView;
 import com.selcukcihan.android.expensetracer.ui.CurrencyFormatInputFilter;
 import com.selcukcihan.android.expensetracer.viewmodel.CategoryViewModel;
 
-public class TransactionActivity extends AppCompatActivity implements CategoryObserver {
+public class TransactionActivity extends DrawerActivity implements CategoryObserver {
     public final static String EXTRA_CATEGORY_TYPE = "com.selcukcihan.android.expensetracer.TRANSACTION_EXTRA_CATEGORY_TYPE";
     public final static String EXTRA_CATEGORY_ID = "com.selcukcihan.android.expensetracer.TRANSACTION_EXTRA_CATEGORY_ID";
 
@@ -25,13 +25,12 @@ public class TransactionActivity extends AppCompatActivity implements CategoryOb
 
     private final CategoryViewModel mCategoryViewModel = new CategoryViewModel(this);
 
-    private Long mSelectedCategoryId; // selection from CategorySelectionActivity. Sync with CategoryView's selection at the beginning only.
+    private Long mSelectedCategoryId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_transaction);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         ((EditText)findViewById(R.id.amount)).setFilters(new InputFilter[] {new CurrencyFormatInputFilter()});
         ((CategoryView)findViewById(R.id.category)).setObserver(this);
@@ -77,5 +76,7 @@ public class TransactionActivity extends AppCompatActivity implements CategoryOb
         ((TextView)findViewById(R.id.categoryLabel)).setText(category.getName());
         findViewById(R.id.categoryTypeStrip).setBackgroundColor(ContextCompat.getColor(this,
                 ((RadioButton)findViewById(R.id.btnExpenseType)).isChecked() ? R.color.colorExpense : R.color.colorIncome));
+
+        mSelectedCategoryId = category.getId();
     }
 }
