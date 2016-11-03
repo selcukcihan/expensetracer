@@ -1,6 +1,9 @@
 package com.selcukcihan.android.expensetracer.model;
 
+import android.database.Cursor;
+
 import com.selcukcihan.android.expensetracer.R;
+import com.selcukcihan.android.expensetracer.db.ExpenseContract;
 
 /**
  * Created by SELCUKCI on 18.10.2016.
@@ -36,6 +39,14 @@ public class Category {
         mName = name;
         mResourceId = resourceId;
         mCategoryType = categoryType;
+    }
+
+    public Category(Cursor cursor) {
+        mId = cursor.getLong(cursor.getColumnIndex(ExpenseContract.CategoryTable.TABLE_ALIAS + "."+ ExpenseContract.CategoryTable.COLUMN_NAME_CATEGORY_ID));
+        mName = cursor.getString(cursor.getColumnIndex(ExpenseContract.CategoryTable.TABLE_ALIAS + "."+ ExpenseContract.CategoryTable.COLUMN_NAME_NAME));
+        mResourceId = cursor.getInt(cursor.getColumnIndex(ExpenseContract.CategoryTable.TABLE_ALIAS + "."+ ExpenseContract.CategoryTable.COLUMN_NAME_RESOURCE_ID));
+        mCategoryType = Category.CategoryType.fromInt(
+                cursor.getInt(cursor.getColumnIndex(ExpenseContract.CategoryTable.TABLE_ALIAS + "."+ ExpenseContract.CategoryTable.COLUMN_NAME_CATEGORY_TYPE)));
     }
 
     public Category(String name, int resourceId, CategoryType categoryType, long categoryId) {

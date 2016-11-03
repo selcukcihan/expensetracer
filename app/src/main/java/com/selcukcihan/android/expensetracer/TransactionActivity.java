@@ -2,20 +2,31 @@ package com.selcukcihan.android.expensetracer;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.os.Bundle;
 import android.text.InputFilter;
 import android.view.View;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.GridView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.selcukcihan.android.expensetracer.model.Category;
+import com.selcukcihan.android.expensetracer.model.Transaction;
+import com.selcukcihan.android.expensetracer.ui.CategoryIconAdapter;
 import com.selcukcihan.android.expensetracer.ui.CategoryObserver;
 import com.selcukcihan.android.expensetracer.ui.CategoryView;
 import com.selcukcihan.android.expensetracer.ui.CurrencyFormatInputFilter;
 import com.selcukcihan.android.expensetracer.viewmodel.CategoryViewModel;
+import com.selcukcihan.android.expensetracer.viewmodel.TransactionViewModel;
+
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 public class TransactionActivity extends DrawerActivity implements CategoryObserver {
     public final static String EXTRA_CATEGORY_TYPE = "com.selcukcihan.android.expensetracer.TRANSACTION_EXTRA_CATEGORY_TYPE";
@@ -32,25 +43,50 @@ public class TransactionActivity extends DrawerActivity implements CategoryObser
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_transaction);
 
-        ((EditText)findViewById(R.id.amount)).setFilters(new InputFilter[] {new CurrencyFormatInputFilter()});
-        ((CategoryView)findViewById(R.id.category)).setObserver(this);
+        init();
+    }
+
+    private void init() {
+        ((EditText) findViewById(R.id.amount)).setFilters(new InputFilter[]{new CurrencyFormatInputFilter()});
+        ((CategoryView) findViewById(R.id.category)).setObserver(this);
+
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fabSave);
+        fab.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                String amount = ((EditText) findViewById(R.id.amount)).getText().toString();
+                String note = ((EditText) findViewById(R.id.note)).getText().toString();
+                DatePicker dp = (DatePicker) findViewById(R.id.date);
+                Calendar cal = Calendar.getInstance();
+                cal.set(Calendar.YEAR, dp.getYear());
+                cal.set(Calendar.MONTH, dp.getMonth());
+                cal.set(Calendar.DAY_OF_MONTH, dp.getDayOfMonth());
+                Transaction transaction = new Transaction(amount, cal.getTime(), mSelectedCategoryId, note);
+                (new TransactionViewModel(TransactionActivity.this)).putTransaction(transaction);
+                finish();
+                Intent i = new Intent(TransactionActivity.this, ListActivity.class);
+                startActivity(i);
+            }
+        });
     }
 
     @Override
     protected void onStart() {
         super.onStart();
+
+        setTitle("New Transaction");
+
         resetCategories();
     }
 
     public void onRadioButtonClicked(View view) {
-        ((CategoryView)findViewById(R.id.category)).reset(view.getId() == R.id.btnExpenseType ? Category.CategoryType.EXPENSE : Category.CategoryType.INCOME, null);
+        ((CategoryView) findViewById(R.id.category)).reset(view.getId() == R.id.btnExpenseType ? Category.CategoryType.EXPENSE : Category.CategoryType.INCOME, null);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         if (requestCode == CATEGORY_SELECTION_ACTIVITY_REQUEST_CODE) {
-            if(resultCode == Activity.RESULT_OK){
+            if (resultCode == Activity.RESULT_OK) {
                 assert data.hasExtra(TransactionActivity.EXTRA_CATEGORY_ID) : "CategoryActivity should post back category id";
                 mSelectedCategoryId = data.getLongExtra(TransactionActivity.EXTRA_CATEGORY_ID, -1);
             } else if (resultCode == Activity.RESULT_CANCELED) {
@@ -66,16 +102,16 @@ public class TransactionActivity extends DrawerActivity implements CategoryObser
             selectedCategory = mCategoryViewModel.getCategoryById(mSelectedCategoryId);
             categoryType = selectedCategory.getCategoryType();
         }
-        ((RadioButton)findViewById(R.id.btnExpenseType)).setChecked(categoryType == Category.CategoryType.EXPENSE);
-        ((RadioButton)findViewById(R.id.btnIncomeType)).setChecked(categoryType == Category.CategoryType.INCOME);
-        ((CategoryView)findViewById(R.id.category)).reset(categoryType, selectedCategory);
+        ((RadioButton) findViewById(R.id.btnExpenseType)).setChecked(categoryType == Category.CategoryType.EXPENSE);
+        ((RadioButton) findViewById(R.id.btnIncomeType)).setChecked(categoryType == Category.CategoryType.INCOME);
+        ((CategoryView) findViewById(R.id.category)).reset(categoryType, selectedCategory);
     }
 
     @Override
     public void onCategoryChanged(Category category) {
-        ((TextView)findViewById(R.id.categoryLabel)).setText(category.getName());
+        ((TextView) findViewById(R.id.categoryLabel)).setText(category.getName());
         findViewById(R.id.categoryTypeStrip).setBackgroundColor(ContextCompat.getColor(this,
-                ((RadioButton)findViewById(R.id.btnExpenseType)).isChecked() ? R.color.colorExpense : R.color.colorIncome));
+                ((RadioButton) findViewById(R.id.btnExpenseType)).isChecked() ? R.color.colorExpense : R.color.colorIncome));
 
         mSelectedCategoryId = category.getId();
     }

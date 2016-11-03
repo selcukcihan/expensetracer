@@ -31,7 +31,6 @@ public abstract class DrawerActivity extends AppCompatActivity implements Naviga
         super.setContentView(mFullView);
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
-        setTitle("Activity Title");
         initializeDrawer();
     }
 
@@ -55,10 +54,10 @@ public abstract class DrawerActivity extends AppCompatActivity implements Naviga
         switch (id)
         {
             case R.id.drawer_new_transaction:
-                startActivity(new Intent(this, TransactionActivity.class));
+                startActivity(new Intent(this, TransactionActivity.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK));
                 return true;
             case R.id.drawer_categories:
-                startActivity(new Intent(this, CategorySelectionActivity.class));
+                startActivity(new Intent(this, CategorySelectionActivity.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK));
                 return true;
             default:
                 break;

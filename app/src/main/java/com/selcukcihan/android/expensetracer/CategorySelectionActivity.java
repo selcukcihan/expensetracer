@@ -33,6 +33,8 @@ public class CategorySelectionActivity extends DrawerActivity {
     }
 
     private void init() {
+        setTitle("Categories");
+
         GridView gridView = (GridView)findViewById(R.id.gridCategory);
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

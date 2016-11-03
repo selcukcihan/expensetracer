@@ -13,6 +13,8 @@ import android.support.annotation.Nullable;
 
 import com.selcukcihan.android.expensetracer.model.Category;
 
+import java.util.HashMap;
+
 /**
  * Created by SELCUKCI on 25.10.2016.
  */
@@ -20,26 +22,25 @@ import com.selcukcihan.android.expensetracer.model.Category;
 public class CategoryProvider extends ContentProvider {
     private CategoryDbHelper mDbHelper;
 
-    // Creates a UriMatcher object.
     private static final UriMatcher sUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 
     private static final int CATEGORY_INCOME = 10;
     private static final int CATEGORY_EXPENSE = 20;
     private static final int CATEGORY_WITH_ID = 30;
 
-    public static final String AUTHORITY = "com.selcukcihan.android.expensetracer.provider";
     public static final String CATEGORY_BASE_PATH = "category";
     public static final String CATEGORY_INCOME_PATH = CATEGORY_BASE_PATH + "/income";
     public static final String CATEGORY_EXPENSE_PATH = CATEGORY_BASE_PATH + "/expense";
+    public static final String CATEGORY_WITH_ID_PATH = CATEGORY_BASE_PATH + "/#";
 
-    public static final Uri CATEGORY_INCOME_CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/" + CATEGORY_INCOME_PATH);
-    public static final Uri CATEGORY_EXPENSE_CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/" + CATEGORY_EXPENSE_PATH);
-    public static final Uri CATEGORY_CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/" + CATEGORY_BASE_PATH);
+    public static final Uri CATEGORY_INCOME_CONTENT_URI = Uri.parse("content://" + ExpenseContract.CATEGORY_AUTHORITY + "/" + CATEGORY_INCOME_PATH);
+    public static final Uri CATEGORY_EXPENSE_CONTENT_URI = Uri.parse("content://" + ExpenseContract.CATEGORY_AUTHORITY + "/" + CATEGORY_EXPENSE_PATH);
+    public static final Uri CATEGORY_CONTENT_URI = Uri.parse("content://" + ExpenseContract.CATEGORY_AUTHORITY + "/" + CATEGORY_BASE_PATH);
 
     static {
-        sUriMatcher.addURI(AUTHORITY, "category/income", CATEGORY_INCOME);
-        sUriMatcher.addURI(AUTHORITY, "category/expense", CATEGORY_EXPENSE);
-        sUriMatcher.addURI(AUTHORITY, "category/#", CATEGORY_WITH_ID);
+        sUriMatcher.addURI(ExpenseContract.CATEGORY_AUTHORITY, CATEGORY_INCOME_PATH, CATEGORY_INCOME);
+        sUriMatcher.addURI(ExpenseContract.CATEGORY_AUTHORITY, CATEGORY_EXPENSE_PATH, CATEGORY_EXPENSE);
+        sUriMatcher.addURI(ExpenseContract.CATEGORY_AUTHORITY, CATEGORY_WITH_ID_PATH, CATEGORY_WITH_ID);
     }
 
     @Override
@@ -48,30 +49,39 @@ public class CategoryProvider extends ContentProvider {
         return true;
     }
 
+    private HashMap<String, String> getProjectionMap() {
+        HashMap<String, String> map = new HashMap<String, String>();
+        for (int i = 0; i < ExpenseContract.CategoryTable.PROJECTION_CLIENT.length; i++) {
+            map.put(ExpenseContract.CategoryTable.PROJECTION_CLIENT[i], ExpenseContract.CategoryTable.PROJECTION_PROVIDER[i]);
+        }
+        return map;
+    }
+
     @Nullable
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
-        /*
-         * Choose the table to query and a sort order based on the code returned for the incoming
-         * URI. Here, too, only the statements for table 3 are shown.
-         */
         SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
-        queryBuilder.setTables(ExpenseContract.CategoryTable.TABLE_NAME);
+
+        queryBuilder.setTables(ExpenseContract.CategoryTable.TABLE_NAME  + " AS " + ExpenseContract.CategoryTable.TABLE_ALIAS);
+
+        queryBuilder.setProjectionMap(getProjectionMap());
         switch (sUriMatcher.match(uri)) {
             case CATEGORY_INCOME:
-                queryBuilder.appendWhere(ExpenseContract.CategoryTable.COLUMN_NAME_CATEGORY_TYPE + "=" + Category.CategoryType.INCOME.getValue());
+                queryBuilder.appendWhere(ExpenseContract.CategoryTable.TABLE_ALIAS + "." + ExpenseContract.CategoryTable.COLUMN_NAME_CATEGORY_TYPE
+                        + "=" + Category.CategoryType.INCOME.getValue());
                 break;
             case CATEGORY_EXPENSE:
-                queryBuilder.appendWhere(ExpenseContract.CategoryTable.COLUMN_NAME_CATEGORY_TYPE + "=" + Category.CategoryType.EXPENSE.getValue());
+                queryBuilder.appendWhere(ExpenseContract.CategoryTable.TABLE_ALIAS + "." + ExpenseContract.CategoryTable.COLUMN_NAME_CATEGORY_TYPE
+                        + "=" + Category.CategoryType.EXPENSE.getValue());
                 break;
             case CATEGORY_WITH_ID:
-                queryBuilder.appendWhere(ExpenseContract.CategoryTable.COLUMN_NAME_CATEGORY_ID + "=" + uri.getLastPathSegment());
+                queryBuilder.appendWhere(ExpenseContract.CategoryTable.TABLE_ALIAS + "." + ExpenseContract.CategoryTable.COLUMN_NAME_CATEGORY_ID + "=" + uri.getLastPathSegment());
                 break;
             default:
                 break;
                 // If the URI is not recognized, you should do some error handling here.
         }
-        SQLiteDatabase db = mDbHelper.getWritableDatabase();
+        SQLiteDatabase db = mDbHelper.getReadableDatabase();
         Cursor cursor = queryBuilder.query(db, projection, selection, selectionArgs, null, null, sortOrder);
         cursor.setNotificationUri(getContext().getContentResolver(), uri);
         return cursor;

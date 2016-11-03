@@ -6,5 +6,5 @@
     android:layout_height="match_parent"
     android:text="Header"
     android:padding="30dp"
-    android:background="?attr/colorAccent"
-    android:textColor="@android:color/white"/>
+    android:background="@color/colorPrimaryDark"
+    android:textColor="@color/colorWhite"/>

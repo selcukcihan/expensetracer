@@ -29,7 +29,7 @@
         android:layout_gravity="start"
         android:divider="@android:color/transparent"
         android:dividerHeight="0dp"
-        app:itemTextColor="@color/colorWhite"
-        android:background="@color/colorPrimaryDark"
+        app:itemTextColor="@color/colorPrimaryText"
+        android:background="@color/colorPrimaryLight"
         app:menu="@menu/menu_drawer"/>
 </android.support.v4.widget.DrawerLayout>

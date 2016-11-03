@@ -36,7 +36,11 @@ public class CategoryActivity extends DrawerActivity {
             boolean expense = intent.getBooleanExtra(CategorySelectionActivity.EXTRA_CATEGORY_TYPE, true);
             ((RadioButton)findViewById(R.id.btnExpenseType)).setChecked(expense);
             ((RadioButton)findViewById(R.id.btnIncomeType)).setChecked(!expense);
+
+            setTitle("New Category");
         } else {
+            setTitle("Edit Category");
+
             long id = intent.getLongExtra(CategorySelectionActivity.EXTRA_CATEGORY_ID, -1);
             CategoryViewModel viewModel = new CategoryViewModel(this);
             Category category = viewModel.getCategoryById(id);

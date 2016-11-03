@@ -24,20 +24,14 @@ public class CategoryViewModel {
     public CategoryViewModel(Context context) {
         mContext = context;
     }
+
     public List<Category> getCategories(Category.CategoryType categoryType) {
         Uri uri = categoryType == Category.CategoryType.EXPENSE ? CategoryProvider.CATEGORY_EXPENSE_CONTENT_URI : CategoryProvider.CATEGORY_INCOME_CONTENT_URI;
 
-        String[] projection = {
-                ExpenseContract.CategoryTable.COLUMN_NAME_NAME,
-                ExpenseContract.CategoryTable.COLUMN_NAME_RESOURCE_ID,
-                ExpenseContract.CategoryTable.COLUMN_NAME_CATEGORY_TYPE,
-                ExpenseContract.CategoryTable.COLUMN_NAME_CATEGORY_ID
-        };
-
         List<Category> categories = new LinkedList<>();
-        Cursor c = mContext.getContentResolver().query(uri, projection, null, null, null);
+        Cursor c = mContext.getContentResolver().query(uri, ExpenseContract.CategoryTable.PROJECTION_CLIENT, null, null, null);
         while (c.moveToNext()) {
-            categories.add(new Category(c.getString(0), c.getInt(1), Category.CategoryType.fromInt(c.getInt(2)), c.getLong(3)));
+            categories.add(new Category(c));
         }
         c.close();
         return categories;
@@ -46,18 +40,11 @@ public class CategoryViewModel {
     public Category getCategoryById(long id) {
         Uri uri = ContentUris.withAppendedId(CategoryProvider.CATEGORY_CONTENT_URI, id);
 
-        String[] projection = {
-                ExpenseContract.CategoryTable.COLUMN_NAME_NAME,
-                ExpenseContract.CategoryTable.COLUMN_NAME_RESOURCE_ID,
-                ExpenseContract.CategoryTable.COLUMN_NAME_CATEGORY_TYPE,
-                ExpenseContract.CategoryTable.COLUMN_NAME_CATEGORY_ID
-        };
-
-        Cursor c = mContext.getContentResolver().query(uri, projection, null, null, null);
+        Cursor c = mContext.getContentResolver().query(uri, ExpenseContract.CategoryTable.PROJECTION_CLIENT, null, null, null);
         Category category;
         if (c.moveToNext()) {
             assert id == c.getInt(3) : "category id mismatch";
-            category = new Category(c.getString(0), c.getInt(1), Category.CategoryType.fromInt(c.getInt(2)), id);
+            category = new Category(c);
         } else {
             throw new NoSuchElementException("No category with id " + id);
         }
