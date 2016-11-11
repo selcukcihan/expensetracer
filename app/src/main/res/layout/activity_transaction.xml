@@ -16,7 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <View android:id="@+id/categoryTypeStrip"
-            android:layout_width="10dp"
+            android:layout_width="4dp"
             android:layout_height="match_parent"
             android:background="@color/colorExpense"/>
         <LinearLayout
@@ -84,6 +84,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:inputType="numberDecimal"
+            android:digits="0123456789,."
             android:ems="6"
             android:id="@+id/amount"
             android:hint="Amount"
@@ -91,8 +92,9 @@
             android:maxLength="12"
             android:layout_gravity="left|center_vertical"
             android:selectAllOnFocus="true">
-                <requestFocus/>
-            </EditText>
+
+            <requestFocus/>
+        </EditText>
         <View
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -108,31 +110,17 @@
             android:clickable="true"
             android:src="@drawable/ic_done_white_24dp" />
     </LinearLayout>
-    <LinearLayout
-        android:id="@+id/linearLayoutDate"
-        android:layout_width="match_parent"
+    <DatePicker
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/linearLayoutAmount"
         android:layout_above="@+id/linearLayoutNote"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="@dimen/activity_horizontal_margin"
-            android:text="Date"
-            android:fontFamily="sans-serif"
-            android:layout_gravity="left|center_vertical"
-            android:textSize="18sp"
-            android:textColor="?attr/editTextColor"/>
-        <DatePicker
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="Date"
-            android:calendarViewShown="false"
-            android:datePickerMode="spinner"
-            android:id="@+id/date" />
-    </LinearLayout>
+        android:ems="10"
+        android:hint="Date"
+        android:calendarViewShown="false"
+        android:datePickerMode="spinner"
+        android:descendantFocusability="blocksDescendants"
+        android:id="@+id/date" />
     <LinearLayout
         android:id="@id/linearLayoutNote"
         android:layout_width="match_parent"
@@ -151,7 +139,7 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textShortMessage"
+            android:inputType="textShortMessage|textCapSentences"
             android:ems="10"
             android:hint="Note"
             android:layout_alignParentLeft="true"

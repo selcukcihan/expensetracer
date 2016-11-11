@@ -48,7 +48,7 @@ public class CategoryActivity extends DrawerActivity {
             ((RadioButton)findViewById(R.id.btnExpenseType)).setChecked(category.getCategoryType() == Category.CategoryType.EXPENSE);
             ((RadioButton)findViewById(R.id.btnIncomeType)).setChecked(category.getCategoryType() == Category.CategoryType.INCOME);
 
-            ((CategoryIconAdapter)((GridView)findViewById(R.id.gridIcon)).getAdapter()).setSelectedIcon(category.getResourceId());
+            ((CategoryIconAdapter)((GridView)findViewById(R.id.gridIcon)).getAdapter()).setSelectedIcon(category.getResourceIdInteger(this));
             ((EditText)findViewById(R.id.categoryName)).setText(category.getName());
         }
 
@@ -75,12 +75,12 @@ public class CategoryActivity extends DrawerActivity {
                 Category.CategoryType categoryType = ((RadioButton)findViewById(R.id.btnExpenseType)).isChecked() ? Category.CategoryType.EXPENSE : Category.CategoryType.INCOME;
                 Category category;
                 if (getIntent().hasExtra(CategorySelectionActivity.EXTRA_CATEGORY_TYPE)) { // adding new category
-                    category = new Category(name, iconResourceId, categoryType);
+                    category = new Category(name, getResources().getResourceEntryName(iconResourceId), categoryType);
                     long id = new CategoryViewModel(CategoryActivity.this).putCategory(category);
                     category.setId(id);
                 } else { // editing category
                     long id = getIntent().getLongExtra(CategorySelectionActivity.EXTRA_CATEGORY_ID, -1);
-                    category = new Category(name, iconResourceId, categoryType, id);
+                    category = new Category(name, getResources().getResourceEntryName(iconResourceId), categoryType, id);
                     new CategoryViewModel(CategoryActivity.this).updateCategory(category);
                 }
 

@@ -13,6 +13,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?actionBarSize"
+            android:titleTextColor="@color/colorWhite"
             android:background="@color/colorPrimary" />
         <FrameLayout
             android:id="@+id/activity_content"
@@ -26,6 +27,7 @@
         android:choiceMode="singleChoice"
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/nav_header"
+        app:itemIconTint="@color/colorPrimaryDark"
         android:layout_gravity="start"
         android:divider="@android:color/transparent"
         android:dividerHeight="0dp"

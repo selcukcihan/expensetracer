@@ -35,6 +35,7 @@ public class TransactionActivity extends DrawerActivity implements CategoryObser
     public final static int CATEGORY_SELECTION_ACTIVITY_REQUEST_CODE = 1;
 
     private final CategoryViewModel mCategoryViewModel = new CategoryViewModel(this);
+    private Transaction mTransaction = null;
 
     private Long mSelectedCategoryId;
 
@@ -61,7 +62,12 @@ public class TransactionActivity extends DrawerActivity implements CategoryObser
                 cal.set(Calendar.MONTH, dp.getMonth());
                 cal.set(Calendar.DAY_OF_MONTH, dp.getDayOfMonth());
                 Transaction transaction = new Transaction(amount, cal.getTime(), mSelectedCategoryId, note);
-                (new TransactionViewModel(TransactionActivity.this)).putTransaction(transaction);
+                if (mTransaction != null) {
+                    transaction.setId(mTransaction.getId());
+                    (new TransactionViewModel(TransactionActivity.this)).updateTransaction(transaction);
+                } else {
+                    (new TransactionViewModel(TransactionActivity.this)).putTransaction(transaction);
+                }
                 finish();
                 Intent i = new Intent(TransactionActivity.this, ListActivity.class);
                 startActivity(i);
@@ -73,8 +79,21 @@ public class TransactionActivity extends DrawerActivity implements CategoryObser
     protected void onStart() {
         super.onStart();
 
-        setTitle("New Transaction");
+        Intent intent = getIntent();
+        if (intent.hasExtra(ListActivity.EXTRA_TRANSACTION)) {
+            mTransaction = intent.getParcelableExtra(ListActivity.EXTRA_TRANSACTION);
+            mSelectedCategoryId = mTransaction.getCategory().getId();
+            setTitle("Edit Transaction");
 
+            ((EditText) findViewById(R.id.amount)).setText(mTransaction.getAmountText());
+            ((EditText) findViewById(R.id.note)).setText(mTransaction.getNote());
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(mTransaction.getDate());
+            ((DatePicker) findViewById(R.id.date)).updateDate(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+
+        } else {
+            setTitle("New Transaction");
+        }
         resetCategories();
     }
 

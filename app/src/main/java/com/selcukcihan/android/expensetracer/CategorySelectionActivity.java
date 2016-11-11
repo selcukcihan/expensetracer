@@ -63,11 +63,12 @@ public class CategorySelectionActivity extends DrawerActivity {
     protected void onStart() {
         super.onStart();
         Intent intent = getIntent();
-        Category.CategoryType categorType = Category.CategoryType.fromInt(intent.getIntExtra(TransactionActivity.EXTRA_CATEGORY_TYPE, -1));
-        ((RadioButton)findViewById(R.id.btnExpenseType)).setChecked(categorType == Category.CategoryType.EXPENSE);
-        ((RadioButton)findViewById(R.id.btnIncomeType)).setChecked(categorType == Category.CategoryType.INCOME);
+        Category.CategoryType categoryType = Category.CategoryType.fromInt(intent.getIntExtra(TransactionActivity.EXTRA_CATEGORY_TYPE,
+                Category.CategoryType.EXPENSE.getValue()));
+        ((RadioButton)findViewById(R.id.btnExpenseType)).setChecked(categoryType == Category.CategoryType.EXPENSE);
+        ((RadioButton)findViewById(R.id.btnIncomeType)).setChecked(categoryType == Category.CategoryType.INCOME);
 
-        ((GridView)findViewById(R.id.gridCategory)).setAdapter(new CategoryAdapter(this, categorType));
+        ((GridView)findViewById(R.id.gridCategory)).setAdapter(new CategoryAdapter(this, categoryType));
     }
 
     @Override

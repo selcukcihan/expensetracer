@@ -3,6 +3,7 @@ package com.selcukcihan.android.expensetracer;
 import android.content.Intent;
 import android.support.annotation.LayoutRes;
 import android.support.design.widget.NavigationView;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -30,6 +31,7 @@ public abstract class DrawerActivity extends AppCompatActivity implements Naviga
         getLayoutInflater().inflate(layoutResID, activityContainer, true);
         super.setContentView(mFullView);
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        mToolbar.setTitleTextColor(ContextCompat.getColor(this, R.color.colorWhite));
         setSupportActionBar(mToolbar);
         initializeDrawer();
     }
@@ -54,14 +56,27 @@ public abstract class DrawerActivity extends AppCompatActivity implements Naviga
         switch (id)
         {
             case R.id.drawer_new_transaction:
-                startActivity(new Intent(this, TransactionActivity.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK));
+                startActivity(new Intent(this, TransactionActivity.class));
                 return true;
             case R.id.drawer_categories:
-                startActivity(new Intent(this, CategorySelectionActivity.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK));
+                startActivity(new Intent(this, CategorySelectionActivity.class));
+                return true;
+            case R.id.drawer_list:
+                //startActivity(new Intent(this, ListActivity.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK));
+                startActivity(new Intent(this, ListActivity.class));
+                return true;
+            case R.id.drawer_report:
+                startActivity(new Intent(this, ReportActivity.class));
                 return true;
             default:
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        overridePendingTransition(0, 0);
     }
 }

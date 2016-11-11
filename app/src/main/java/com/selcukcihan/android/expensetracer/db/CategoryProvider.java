@@ -20,7 +20,7 @@ import java.util.HashMap;
  */
 
 public class CategoryProvider extends ContentProvider {
-    private CategoryDbHelper mDbHelper;
+    private ExpenseTracerDbHelper mDbHelper;
 
     private static final UriMatcher sUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 
@@ -45,16 +45,8 @@ public class CategoryProvider extends ContentProvider {
 
     @Override
     public boolean onCreate() {
-        mDbHelper = new CategoryDbHelper(getContext());
+        mDbHelper = new ExpenseTracerDbHelper(getContext());
         return true;
-    }
-
-    private HashMap<String, String> getProjectionMap() {
-        HashMap<String, String> map = new HashMap<String, String>();
-        for (int i = 0; i < ExpenseContract.CategoryTable.PROJECTION_CLIENT.length; i++) {
-            map.put(ExpenseContract.CategoryTable.PROJECTION_CLIENT[i], ExpenseContract.CategoryTable.PROJECTION_PROVIDER[i]);
-        }
-        return map;
     }
 
     @Nullable
@@ -62,20 +54,17 @@ public class CategoryProvider extends ContentProvider {
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
 
-        queryBuilder.setTables(ExpenseContract.CategoryTable.TABLE_NAME  + " AS " + ExpenseContract.CategoryTable.TABLE_ALIAS);
+        queryBuilder.setTables(ExpenseContract.CategoryTable.TABLE_NAME);
 
-        queryBuilder.setProjectionMap(getProjectionMap());
         switch (sUriMatcher.match(uri)) {
             case CATEGORY_INCOME:
-                queryBuilder.appendWhere(ExpenseContract.CategoryTable.TABLE_ALIAS + "." + ExpenseContract.CategoryTable.COLUMN_NAME_CATEGORY_TYPE
-                        + "=" + Category.CategoryType.INCOME.getValue());
+                queryBuilder.appendWhere(ExpenseContract.CategoryTable.COLUMN_NAME_CATEGORY_TYPE + "=" + Category.CategoryType.INCOME.getValue());
                 break;
             case CATEGORY_EXPENSE:
-                queryBuilder.appendWhere(ExpenseContract.CategoryTable.TABLE_ALIAS + "." + ExpenseContract.CategoryTable.COLUMN_NAME_CATEGORY_TYPE
-                        + "=" + Category.CategoryType.EXPENSE.getValue());
+                queryBuilder.appendWhere(ExpenseContract.CategoryTable.COLUMN_NAME_CATEGORY_TYPE + "=" + Category.CategoryType.EXPENSE.getValue());
                 break;
             case CATEGORY_WITH_ID:
-                queryBuilder.appendWhere(ExpenseContract.CategoryTable.TABLE_ALIAS + "." + ExpenseContract.CategoryTable.COLUMN_NAME_CATEGORY_ID + "=" + uri.getLastPathSegment());
+                queryBuilder.appendWhere(ExpenseContract.CategoryTable._ID + "=" + uri.getLastPathSegment());
                 break;
             default:
                 break;

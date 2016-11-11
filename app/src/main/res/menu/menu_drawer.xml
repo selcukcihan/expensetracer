@@ -1,15 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item
-        android:id="@+id/drawer_new_transaction"
-        android:icon="@android:drawable/ic_btn_speak_now"
-        android:title="New Transaction"/>
-    <item
-        android:id="@+id/drawer_categories"
-        android:icon="@android:drawable/ic_btn_speak_now"
-        android:title="Categories"/>
-    <item
-        android:id="@+id/drawer_reports"
-        android:icon="@android:drawable/ic_btn_speak_now"
-        android:title="Reports"/>
+    <group android:id="@+id/group_edit"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/drawer_new_transaction"
+            android:icon="@drawable/ic_mode_edit_white_24dp"
+            android:title="New Transaction"/>
+    </group>
+    <group android:id="@+id/group_watch"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/drawer_report"
+            android:icon="@drawable/ic_multiline_chart_white_24dp"
+            android:title="Reports"/>
+        <item
+            android:id="@+id/drawer_list"
+            android:icon="@drawable/ic_list_white_24dp"
+            android:title="List"/>
+    </group>
+    <group android:id="@+id/group_misc"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/drawer_categories"
+            android:icon="@drawable/ic_label_white_24dp"
+            android:title="Categories"/>
+    </group>
 </menu>

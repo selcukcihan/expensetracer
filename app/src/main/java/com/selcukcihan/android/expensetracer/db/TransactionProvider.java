@@ -18,7 +18,7 @@ import java.util.HashMap;
  */
 
 public class TransactionProvider extends ContentProvider {
-    private TransactionDbHelper mDbHelper;
+    private ExpenseTracerDbHelper mDbHelper;
 
     private static final UriMatcher sUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 
@@ -31,7 +31,6 @@ public class TransactionProvider extends ContentProvider {
 
     public static final Uri TRANSACTION_CONTENT_URI = Uri.parse("content://" + ExpenseContract.TRANSACTION_AUTHORITY + "/" + TRANSACTION_BASE_PATH);
     public static final Uri TRANSACTION_ALL_CONTENT_URI = Uri.parse("content://" + ExpenseContract.TRANSACTION_AUTHORITY + "/" + TRANSACTION_ALL_PATH);
-    public static final Uri TRANSACTION_WITH_ID_CONTENT_URI = Uri.parse("content://" + ExpenseContract.TRANSACTION_AUTHORITY + "/" + TRANSACTION_WITH_ID_PATH);
 
     static {
         sUriMatcher.addURI(ExpenseContract.TRANSACTION_AUTHORITY, TRANSACTION_ALL_PATH, TRANSACTION_ALL);
@@ -40,16 +39,8 @@ public class TransactionProvider extends ContentProvider {
 
     @Override
     public boolean onCreate() {
-        mDbHelper = new TransactionDbHelper(getContext());
+        mDbHelper = new ExpenseTracerDbHelper(getContext());
         return true;
-    }
-
-    private HashMap<String, String> getProjectionMap() {
-        HashMap<String, String> map = new HashMap<String, String>();
-        for (int i = 0; i < ExpenseContract.TransactionTable.PROJECTION_CLIENT.length; i++) {
-            map.put(ExpenseContract.TransactionTable.PROJECTION_CLIENT[i], ExpenseContract.TransactionTable.PROJECTION_PROVIDER[i]);
-        }
-        return map;
     }
 
     @Nullable
@@ -57,18 +48,16 @@ public class TransactionProvider extends ContentProvider {
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
 
-        queryBuilder.setTables(ExpenseContract.TransactionTable.TABLE_NAME + " AS " + ExpenseContract.TransactionTable.TABLE_ALIAS
-            + " JOIN " + ExpenseContract.CategoryTable.TABLE_NAME  + " AS " + ExpenseContract.CategoryTable.TABLE_ALIAS + " ON ("
-            + ExpenseContract.TransactionTable.TABLE_ALIAS + "." + ExpenseContract.TransactionTable.COLUMN_NAME_CATEGORY + " = "
-            + ExpenseContract.CategoryTable.TABLE_ALIAS + "." + ExpenseContract.CategoryTable.COLUMN_NAME_CATEGORY_ID + ")");
+        queryBuilder.setTables(ExpenseContract.TransactionTable.TABLE_NAME
+            + " JOIN " + ExpenseContract.CategoryTable.TABLE_NAME + " ON ("
+            + ExpenseContract.TransactionTable.TABLE_NAME + "." + ExpenseContract.TransactionTable.COLUMN_NAME_CATEGORY + " = "
+            + ExpenseContract.CategoryTable.TABLE_NAME + "." + ExpenseContract.CategoryTable._ID + ")");
 
-
-        queryBuilder.setProjectionMap(getProjectionMap());
         switch (sUriMatcher.match(uri)) {
             case TRANSACTION_ALL:
                 break;
             case TRANSACTION_WITH_ID:
-                queryBuilder.appendWhere(ExpenseContract.TransactionTable.TABLE_ALIAS + "." + ExpenseContract.TransactionTable.COLUMN_NAME_TRANSACTION_ID + "=" + uri.getLastPathSegment());
+                queryBuilder.appendWhere(ExpenseContract.TransactionTable.TABLE_NAME + "." + ExpenseContract.TransactionTable._ID + "=" + uri.getLastPathSegment());
                 break;
             default:
                 break;

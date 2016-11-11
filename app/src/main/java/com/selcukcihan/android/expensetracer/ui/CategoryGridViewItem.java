@@ -37,7 +37,7 @@ public class CategoryGridViewItem extends LinearLayout {
         setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
 
         ImageView imageView = new ImageView(getContext());
-        imageView.setImageResource(category.getResourceId());
+        imageView.setImageResource(category.getResourceIdInteger(getContext()));
         imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
         imageView.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT, 1.0f));
         imageView.setColorFilter(ContextCompat.getColor(getContext(), R.color.colorPrimaryDark), PorterDuff.Mode.MULTIPLY);

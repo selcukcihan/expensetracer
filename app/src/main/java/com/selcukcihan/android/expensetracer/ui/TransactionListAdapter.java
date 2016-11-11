@@ -16,6 +16,8 @@ import com.selcukcihan.android.expensetracer.db.ExpenseContract;
 import com.selcukcihan.android.expensetracer.model.Category;
 import com.selcukcihan.android.expensetracer.model.Transaction;
 
+import java.text.SimpleDateFormat;
+
 import static android.R.attr.name;
 
 /**
@@ -36,7 +38,7 @@ public class TransactionListAdapter extends ResourceCursorAdapter {
         Transaction transaction = new Transaction(cursor);
 
         ImageView icon = (ImageView) view.findViewById(R.id.transaction_list_item_icon);
-        icon.setImageResource(transaction.getCategory().getResourceId());
+        icon.setImageResource(transaction.getCategory().getResourceIdInteger(mContext));
         icon.setColorFilter(ContextCompat.getColor(mContext,
                 transaction.getCategory().getCategoryType() == Category.CategoryType.EXPENSE ? R.color.colorExpense : R.color.colorIncome),
                 PorterDuff.Mode.MULTIPLY);
@@ -44,7 +46,19 @@ public class TransactionListAdapter extends ResourceCursorAdapter {
         TextView amount = (TextView) view.findViewById(R.id.transaction_list_item_amount);
         amount.setText(transaction.getAmountText());
 
-        TextView note = (TextView) view.findViewById(R.id.transaction_list_item_note);
-        note.setText(transaction.getNote());
+        TextView date = (TextView) view.findViewById(R.id.transaction_list_item_date);
+        date.setText(transaction.getDateText());
+
+        TextView big = (TextView) view.findViewById(R.id.transaction_list_item_text_big);
+        if (!transaction.getNote().isEmpty()) {
+            big.setText(transaction.getNote());
+            TextView small = (TextView) view.findViewById(R.id.transaction_list_item_text_small);
+            small.setText("{" + transaction.getCategory().getName() + "}");
+        } else { // no notes, display only the category name
+            view.findViewById(R.id.transaction_list_item_text_small).setVisibility(View.GONE);
+            big.setText(transaction.getCategory().getName());
+        }
+
+        view.setTag(transaction);
     }
 }

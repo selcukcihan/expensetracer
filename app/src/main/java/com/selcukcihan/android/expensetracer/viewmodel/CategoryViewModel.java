@@ -29,7 +29,7 @@ public class CategoryViewModel {
         Uri uri = categoryType == Category.CategoryType.EXPENSE ? CategoryProvider.CATEGORY_EXPENSE_CONTENT_URI : CategoryProvider.CATEGORY_INCOME_CONTENT_URI;
 
         List<Category> categories = new LinkedList<>();
-        Cursor c = mContext.getContentResolver().query(uri, ExpenseContract.CategoryTable.PROJECTION_CLIENT, null, null, null);
+        Cursor c = mContext.getContentResolver().query(uri, ExpenseContract.CategoryTable.PROJECTION, null, null, null);
         while (c.moveToNext()) {
             categories.add(new Category(c));
         }
@@ -40,7 +40,7 @@ public class CategoryViewModel {
     public Category getCategoryById(long id) {
         Uri uri = ContentUris.withAppendedId(CategoryProvider.CATEGORY_CONTENT_URI, id);
 
-        Cursor c = mContext.getContentResolver().query(uri, ExpenseContract.CategoryTable.PROJECTION_CLIENT, null, null, null);
+        Cursor c = mContext.getContentResolver().query(uri, ExpenseContract.CategoryTable.PROJECTION, null, null, null);
         Category category;
         if (c.moveToNext()) {
             assert id == c.getInt(3) : "category id mismatch";
@@ -53,7 +53,7 @@ public class CategoryViewModel {
     }
 
     public void deleteCategory(Category category) {
-        String selectionClause = ExpenseContract.CategoryTable.COLUMN_NAME_CATEGORY_ID +  "= ?";
+        String selectionClause = ExpenseContract.CategoryTable._ID +  "= ?";
         String[] selectionArgs = {String.format("%d", category.getId())};
 
         Uri uri = ContentUris.withAppendedId(CategoryProvider.CATEGORY_CONTENT_URI, category.getId());
@@ -75,7 +75,7 @@ public class CategoryViewModel {
     public void updateCategory(Category category) {
         ContentValues values = new ContentValues();
 
-        String selectionClause = ExpenseContract.CategoryTable.COLUMN_NAME_CATEGORY_ID +  "= ?";
+        String selectionClause = ExpenseContract.CategoryTable._ID +  "= ?";
         String[] selectionArgs = {String.format("%d", category.getId())};
 
         values.put(ExpenseContract.CategoryTable.COLUMN_NAME_CATEGORY_TYPE, category.getCategoryType().getValue());

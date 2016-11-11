@@ -96,7 +96,7 @@ public class CategoryView extends GridLayout {
         }
 
         if (selectedItemIndex >= maxCount) { // the selected item is not contained in the visible items, so we put it in the first cell (0, 0)
-            addButton(rows[row], cols[col], category, category.getResourceId(), true);
+            addButton(rows[row], cols[col], category, category.getResourceIdInteger(getContext()), true);
             selectedItemIndex = -1; // we mark it that the selected item is already displayed
             col++;
             count++;
@@ -104,7 +104,7 @@ public class CategoryView extends GridLayout {
 
         for (int i = 0; i < categories.size() && count < maxCount; i++) {
             Category cat = categories.get(i);
-            addButton(rows[row], cols[col], cat, cat.getResourceId(), selectedItemIndex == i);
+            addButton(rows[row], cols[col], cat, cat.getResourceIdInteger(getContext()), selectedItemIndex == i);
             count++;
             col++;
             if (col == mColCount) {
@@ -161,7 +161,7 @@ public class CategoryView extends GridLayout {
         ImageButton b = new ImageButton(getContext());
         b.setTag(category);
 
-        assert category == null || category.getResourceId() == resourceId : "category id mismatch";
+        assert category == null || category.getResourceIdInteger(getContext()) == resourceId : "category id mismatch";
         b.setImageResource(resourceId);
         b.setBackgroundColor(Color.TRANSPARENT);
 
