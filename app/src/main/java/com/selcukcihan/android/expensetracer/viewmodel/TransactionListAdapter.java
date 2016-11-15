@@ -1,4 +1,4 @@
-package com.selcukcihan.android.expensetracer.ui;
+package com.selcukcihan.android.expensetracer.viewmodel;
 
 import android.content.Context;
 import android.database.Cursor;

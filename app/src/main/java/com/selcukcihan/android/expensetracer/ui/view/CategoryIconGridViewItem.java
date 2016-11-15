@@ -1,4 +1,4 @@
-package com.selcukcihan.android.expensetracer.ui;
+package com.selcukcihan.android.expensetracer.ui.view;
 
 import android.content.Context;
 import android.graphics.PorterDuff;

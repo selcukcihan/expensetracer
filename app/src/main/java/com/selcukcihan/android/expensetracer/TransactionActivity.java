@@ -2,31 +2,25 @@ package com.selcukcihan.android.expensetracer;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.net.Uri;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.widget.DrawerLayout;
 import android.os.Bundle;
 import android.text.InputFilter;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.GridView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.selcukcihan.android.expensetracer.model.Category;
 import com.selcukcihan.android.expensetracer.model.Transaction;
-import com.selcukcihan.android.expensetracer.ui.CategoryIconAdapter;
 import com.selcukcihan.android.expensetracer.ui.CategoryObserver;
-import com.selcukcihan.android.expensetracer.ui.CategoryView;
+import com.selcukcihan.android.expensetracer.ui.view.CategoryView;
 import com.selcukcihan.android.expensetracer.ui.CurrencyFormatInputFilter;
 import com.selcukcihan.android.expensetracer.viewmodel.CategoryViewModel;
 import com.selcukcihan.android.expensetracer.viewmodel.TransactionViewModel;
 
 import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
 
 public class TransactionActivity extends DrawerActivity implements CategoryObserver {
     public final static String EXTRA_CATEGORY_TYPE = "com.selcukcihan.android.expensetracer.TRANSACTION_EXTRA_CATEGORY_TYPE";

@@ -37,7 +37,7 @@
                 android:fontFamily="sans-serif"
                 android:textSize="24sp"
                 android:textColor="?attr/editTextColor" />
-            <com.selcukcihan.android.expensetracer.ui.CategoryView
+            <com.selcukcihan.android.expensetracer.ui.view.CategoryView
                 android:id="@+id/category"
                 android:minHeight="80dp"
                 android:layout_weight="1"

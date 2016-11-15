@@ -4,18 +4,14 @@ import android.app.Activity;
 import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.RadioButton;
-import android.widget.TextView;
 
 import com.selcukcihan.android.expensetracer.model.Category;
-import com.selcukcihan.android.expensetracer.ui.CategoryIconAdapter;
-import com.selcukcihan.android.expensetracer.ui.CategoryObserver;
-import com.selcukcihan.android.expensetracer.ui.CategoryView;
+import com.selcukcihan.android.expensetracer.viewmodel.CategoryIconAdapter;
 import com.selcukcihan.android.expensetracer.viewmodel.CategoryViewModel;
 
 public class CategoryActivity extends DrawerActivity {

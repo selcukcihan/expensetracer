@@ -31,6 +31,7 @@ public class ChartType {
 
     public static final ChartType[] CHART_TYPES = new ChartType[] {
             new ChartType("Pie chart", R.layout.chart_pie, R.drawable.ic_pie_chart_white_24dp),
-            new ChartType("Web chart", R.layout.chart_web, R.drawable.ic_insert_chart_white_24dp)
+            new ChartType("Web chart", R.layout.chart_web, R.drawable.ic_panorama_horizontal_white_24dp),
+            new ChartType("Bar chart", R.layout.chart_bar, R.drawable.ic_insert_chart_white_24dp)
     };
 }

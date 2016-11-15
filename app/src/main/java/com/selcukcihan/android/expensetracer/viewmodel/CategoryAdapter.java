@@ -1,4 +1,4 @@
-package com.selcukcihan.android.expensetracer.ui;
+package com.selcukcihan.android.expensetracer.viewmodel;
 
 import android.content.Context;
 import android.view.View;
@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
 import com.selcukcihan.android.expensetracer.model.Category;
+import com.selcukcihan.android.expensetracer.ui.view.CategoryGridViewItem;
 import com.selcukcihan.android.expensetracer.viewmodel.CategoryViewModel;
 
 import java.util.List;

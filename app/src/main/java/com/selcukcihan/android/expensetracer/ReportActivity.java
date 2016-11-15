@@ -1,46 +1,47 @@
 package com.selcukcihan.android.expensetracer;
 
-import android.app.ActionBar;
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AlertDialog;
-import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
-import android.widget.RadioButton;
-import android.widget.Toast;
 
 import com.selcukcihan.android.expensetracer.model.ChartType;
-import com.selcukcihan.android.expensetracer.model.Transaction;
-import com.selcukcihan.android.expensetracer.ui.ChartTypeFragment;
-import com.selcukcihan.android.expensetracer.ui.ReportPagerAdapter;
-import com.selcukcihan.android.expensetracer.ui.TransactionListAdapter;
+import com.selcukcihan.android.expensetracer.model.TransactionReport;
+import com.selcukcihan.android.expensetracer.ui.ChartTypeSelection;
+import com.selcukcihan.android.expensetracer.viewmodel.ReportPagerAdapter;
 import com.selcukcihan.android.expensetracer.viewmodel.TransactionViewModel;
 
 /**
  * Created by SELCUKCI on 2.11.2016.
  */
 
-public class ReportActivity extends DrawerActivity implements ChartTypeFragment.ChartTypeObserver {
+public class ReportActivity extends DrawerActivity implements ChartTypeSelection.ChartTypeObserver {
+    private static final String KEY_SELECTED_CHART_TYPE = "SELECTED_CHART_TYPE";
+
+    private TransactionReport mReport;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_report);
 
+        ChartType selectedChartType = ChartType.CHART_TYPES[2];
+        if (savedInstanceState != null) {
+            CharSequence savedChart = savedInstanceState.getCharSequence(KEY_SELECTED_CHART_TYPE);
+            for (ChartType c : ChartType.CHART_TYPES) {
+                if (c.toString().compareTo(savedChart.toString()) == 0) {
+                    selectedChartType = c;
+                }
+            }
+        }
 
-        init();
+        init(selectedChartType);
     }
 
-    private void init() {
-        ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
-        viewPager.setAdapter(new ReportPagerAdapter(this));
-        ((ReportPagerAdapter)viewPager.getAdapter()).setChartType(ChartType.CHART_TYPES[0]);
+    private void init(ChartType selectedChartType) {
+        mReport = (new TransactionViewModel(this)).getTransactionReport();
+        handleChartTypeChange(selectedChartType, true);
     }
 
     @Override
@@ -60,7 +61,7 @@ public class ReportActivity extends DrawerActivity implements ChartTypeFragment.
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_chart_type:
-                ChartTypeFragment.newDialog(this).show();
+                ChartTypeSelection.showDialog(this, ((ReportPagerAdapter)(((ViewPager)findViewById(R.id.viewpager)).getAdapter())).getChartType());
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -68,12 +69,22 @@ public class ReportActivity extends DrawerActivity implements ChartTypeFragment.
         }
     }
 
+    public void handleChartTypeChange(ChartType chartType, boolean gotoLastPage) {
+        ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
+        viewPager.setAdapter(new ReportPagerAdapter(this, mReport, chartType));
+        if (gotoLastPage) {
+            viewPager.setCurrentItem(((ReportPagerAdapter)(((ViewPager)findViewById(R.id.viewpager)).getAdapter())).getCount() - 1);
+        }
+    }
+
     @Override
     public void onChartTypeChanged(ChartType chartType) {
-        Toast.makeText(this, "NABER\t" + chartType.getLayoutResourceId() + "\t" + chartType.toString(), Toast.LENGTH_SHORT).show();
+        handleChartTypeChange(chartType, false);
+    }
 
-        ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
-        ((ReportPagerAdapter)viewPager.getAdapter()).setChartType(chartType);
-        //viewPager.setAdapter(new ReportPagerAdapter(this));
+    @Override
+    protected void onSaveInstanceState (Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putCharSequence(KEY_SELECTED_CHART_TYPE, ((ReportPagerAdapter)(((ViewPager)findViewById(R.id.viewpager)).getAdapter())).getChartType().toString());
     }
 }

@@ -15,6 +15,7 @@ import java.util.Date;
  */
 
 public class Transaction implements Parcelable {
+    private static final SimpleDateFormat YEAR_FORMAT = new SimpleDateFormat("yyyy");
     private static final SimpleDateFormat YEAR_MONTH_FORMAT = new SimpleDateFormat("yyyy-MM");
     private static final SimpleDateFormat DAY_MONTH_FORMAT = new SimpleDateFormat("d MMM, E");
     private static final SimpleDateFormat DAY_MONTH_YEAR_FORMAT = new SimpleDateFormat("d MMM y");
@@ -79,8 +80,11 @@ public class Transaction implements Parcelable {
     }
 
     public String getYearMonth() {
-
         return YEAR_MONTH_FORMAT.format(getDate());
+    }
+
+    public String getYear() {
+        return YEAR_FORMAT.format(getDate());
     }
 
     public Long getCategoryId() {

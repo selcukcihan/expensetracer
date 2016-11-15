@@ -65,13 +65,43 @@ public class ExpenseTracerDbHelper extends SQLiteOpenHelper {
         createTransactionTable(db);
 
         try {
-            addDummyTransactions(db);
+            for (String year : new String[]{"2014", "2015", "2016"}) {
+                addDummyTransactions(db, year);
+                addDummyIncomes(db, year);
+            }
         } catch(Exception ex) {
             Log.e("PSEUDO", ex.toString());
         }
     }
 
-    private void addDummyTransactions(SQLiteDatabase db) throws ParseException {
+    private void addDummyIncomes(SQLiteDatabase db, String year) throws ParseException {
+        Random r = new Random();
+        String[] randomNotes = new String[] {
+                "Random bus",
+                "Cinema ticket",
+                "Dummy dummy",
+                "Market spending",
+                "Shirt and trousers",
+                "Holiday",
+                "Swimming pool",
+                "Gas for the car",
+                "Mobile bill"
+        };
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        for (int m = 0; m < 12; m++) {
+            Date date = format.parse(year + "-" + String.format("%2d", m + 1) + "-" + String.format("%2d", 1));
+            Transaction t = new Transaction("4000", date, (long)8, "Salary");
+
+            ContentValues values = new ContentValues();
+            values.put(ExpenseContract.TransactionTable.COLUMN_NAME_AMOUNT, t.getAmountRaw());
+            values.put(ExpenseContract.TransactionTable.COLUMN_NAME_DATE, t.getDateRaw());
+            values.put(ExpenseContract.TransactionTable.COLUMN_NAME_CATEGORY, t.getCategoryId());
+            values.put(ExpenseContract.TransactionTable.COLUMN_NAME_NOTE, t.getNote());
+            db.insert(ExpenseContract.TransactionTable.TABLE_NAME, null, values);
+        }
+    }
+
+    private void addDummyTransactions(SQLiteDatabase db, String year) throws ParseException {
         Random r = new Random();
         String[] randomNotes = new String[] {
                 "Random bus",
@@ -89,7 +119,7 @@ public class ExpenseTracerDbHelper extends SQLiteOpenHelper {
             int monthlyCount = 20 + r.nextInt(100);
             for (int i = 0; i < monthlyCount; i++) {
                 Float amount = 2 + r.nextInt(10000) / 100.0f;
-                Date date = format.parse("2016-" + String.format("%2d", m + 1) + "-" + String.format("%2d", 1 + r.nextInt(28)));
+                Date date = format.parse(year + "-" + String.format("%2d", m + 1) + "-" + String.format("%2d", 1 + r.nextInt(28)));
                 Transaction t = new Transaction(String.format("%.2f", amount), date,
                         (long)r.nextInt(Category.DEFAULT_EXPENSE_CATEGORIES.length),
                         randomNotes[r.nextInt(randomNotes.length)]);

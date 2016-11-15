@@ -1,4 +1,4 @@
-package com.selcukcihan.android.expensetracer.ui;
+package com.selcukcihan.android.expensetracer.viewmodel;
 
 import android.content.Context;
 import android.graphics.PorterDuff;
@@ -6,10 +6,10 @@ import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.GridView;
 import android.widget.ImageView;
 
 import com.selcukcihan.android.expensetracer.R;
+import com.selcukcihan.android.expensetracer.ui.view.CategoryIconGridViewItem;
 
 /**
  * Created by SELCUKCI on 21.10.2016.

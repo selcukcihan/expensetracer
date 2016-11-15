@@ -1,4 +1,4 @@
-package com.selcukcihan.android.expensetracer.ui;
+package com.selcukcihan.android.expensetracer.ui.view;
 
 import android.app.Activity;
 import android.content.Context;
@@ -22,6 +22,7 @@ import com.selcukcihan.android.expensetracer.CategorySelectionActivity;
 import com.selcukcihan.android.expensetracer.R;
 import com.selcukcihan.android.expensetracer.TransactionActivity;
 import com.selcukcihan.android.expensetracer.model.Category;
+import com.selcukcihan.android.expensetracer.ui.CategoryObserver;
 import com.selcukcihan.android.expensetracer.viewmodel.CategoryViewModel;
 
 import java.io.Console;
