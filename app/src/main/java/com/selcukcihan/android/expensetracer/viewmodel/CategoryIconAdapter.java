@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
+import com.selcukcihan.android.expensetracer.DrawerActivity;
 import com.selcukcihan.android.expensetracer.R;
 import com.selcukcihan.android.expensetracer.ui.view.CategoryIconGridViewItem;
 
@@ -16,11 +17,11 @@ import com.selcukcihan.android.expensetracer.ui.view.CategoryIconGridViewItem;
  */
 
 public class CategoryIconAdapter extends BaseAdapter {
-    private Context mContext;
+    private DrawerActivity mContext;
     private ImageView mSelection;
     private Integer mSelectedResourceId = null;
     // Constructor
-    public CategoryIconAdapter(Context c) {
+    public CategoryIconAdapter(DrawerActivity c) {
         mContext = c;
     }
 
@@ -46,6 +47,10 @@ public class CategoryIconAdapter extends BaseAdapter {
         return (int)mSelection.getTag();
     }
 
+    public boolean selected() {
+        return mSelection != null;
+    }
+
     // create a new ImageView for each item referenced by the Adapter
     public View getView(int position, View convertView, ViewGroup parent) {
         CategoryIconGridViewItem imageView;
@@ -65,6 +70,8 @@ public class CategoryIconAdapter extends BaseAdapter {
                             mSelection = view;
                         }
                     }
+
+                    mContext.inputChanged();
                 }
             });
 

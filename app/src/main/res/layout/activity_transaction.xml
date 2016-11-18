@@ -9,141 +9,175 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.selcukcihan.android.expensetracer.TransactionActivity">
-    <LinearLayout
-        android:orientation="horizontal"
+    <android.support.v7.widget.GridLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+        app:columnCount="2"
+        app:rowCount="2"
         android:id="@+id/linearLayoutCompat"
         android:layout_alignParentTop="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <View android:id="@+id/categoryTypeStrip"
-            android:layout_width="4dp"
-            android:layout_height="match_parent"
-            android:background="@color/colorExpense"/>
-        <LinearLayout
-            android:layout_weight="1"
-            android:orientation="vertical"
-            android:id="@+id/linearLayoutCategories"
-            android:layout_gravity="left|center_vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+
+        <TextView
+            android:text="Category"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:id="@+id/categoryLabel"
+            android:fontFamily="sans-serif"
+            android:textStyle="bold"
+            app:layout_column="0"
+            app:layout_row="0"
+            app:layout_gravity="center_vertical"
+            android:layout_height="30dp"
+            android:textSize="18sp"
+            android:textColor="?attr/editTextColor" />
+        <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+            app:layout_column="1"
+            app:layout_row="0"
+            android:layout_height="30dp"
+            android:layout_width="150dp"
+            app:layout_gravity="right"
+            android:layout_marginRight="5dp"
+            android:background="@drawable/radio_background"
+            android:orientation="horizontal">
+            <RadioButton
+                android:id="@+id/btnExpenseType"
+                android:layout_marginBottom="@dimen/transaction_type_radio_margin"
+                android:layout_marginTop="@dimen/transaction_type_radio_margin"
+                android:layout_marginLeft="@dimen/transaction_type_radio_margin"
+                android:background="@drawable/radio_background_toggle"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:onClick="onRadioButtonClicked"
+                android:button="@null"
+                android:gravity="center"
+                android:text="Expense"
+                android:textColor="@color/colorWhite" />
+            <RadioButton
+                android:id="@+id/btnIncomeType"
+                android:layout_marginBottom="@dimen/transaction_type_radio_margin"
+                android:layout_marginTop="@dimen/transaction_type_radio_margin"
+                android:layout_marginRight="@dimen/transaction_type_radio_margin"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:onClick="onRadioButtonClicked"
+                android:background="@drawable/radio_background_toggle"
+                android:button="@null"
+                android:gravity="center"
+                android:text="Income"
+                android:textColor="@color/colorWhite" />
+        </RadioGroup>
+        <com.selcukcihan.android.expensetracer.ui.view.CategoryView
+            android:id="@+id/category"
+            android:minHeight="80dp"
+            app:layout_gravity="fill"
+            app:layout_column="0"
+            app:layout_row="1"
+            app:layout_columnSpan="2" />
+    </android.support.v7.widget.GridLayout>
+    <TableLayout
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_below="@+id/linearLayoutCompat"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TableRow>
             <TextView
-                android:text="Category"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/activity_horizontal_margin"
-                android:layout_marginBottom="@dimen/activity_vertical_margin"
-                android:id="@+id/categoryLabel"
-                android:layout_gravity="center_horizontal"
+                android:text="Amount"
                 android:fontFamily="sans-serif"
-                android:textSize="24sp"
-                android:textColor="?attr/editTextColor" />
-            <com.selcukcihan.android.expensetracer.ui.view.CategoryView
-                android:id="@+id/category"
-                android:minHeight="80dp"
-                android:layout_weight="1"
+                android:layout_gravity="center_vertical"
+                android:textSize="18sp"
+                android:textColor="?attr/editTextColor"/>
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
-
-        <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right|center_vertical"
-            android:orientation="vertical">
-
-            <RadioButton android:id="@+id/btnExpenseType"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:inputType="numberDecimal"
+                    android:digits="0123456789,."
+                    android:ems="6"
+                    android:id="@+id/amount"
+                    android:hint="Amount"
+                    android:maxLines="1"
+                    android:maxLength="12"
+                    android:layout_gravity="left|center_vertical"
+                    android:selectAllOnFocus="true">
+                    <requestFocus/>
+                </EditText>
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+                <android.support.design.widget.FloatingActionButton xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/fabSave"
+                    app:fabSize="normal"
+                    android:tint="@android:color/white"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right|center_vertical"
+                    android:layout_margin="8dp"
+                    android:clickable="true"
+                    android:backgroundTint="@color/colorDivider"
+                    android:src="@drawable/ic_done_white_24dp" />
+            </LinearLayout>
+        </TableRow>
+        <TableRow>
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Expense"
-                android:onClick="onRadioButtonClicked"/>
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:text="Date"
+                android:fontFamily="sans-serif"
+                android:textSize="18sp"
+                android:textColor="?attr/editTextColor"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/date_display"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:inputType="date"
+                    android:textSize="18sp"
+                    android:text="2016-12-24"
+                    android:textColor="?attr/editTextColor"
+                    android:onClick="onDateButtonClicked"
+                    android:maxLines="1" />
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left|center_vertical"
+                    android:onClick="onDateButtonClicked"
+                    android:backgroundTint="@color/colorDivider"
+                    android:background="@drawable/ic_arrow_drop_down_white_24dp" />
+            </LinearLayout>
+        </TableRow>
 
-            <RadioButton android:id="@+id/btnIncomeType"
+        <TableRow>
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Income"
-                android:onClick="onRadioButtonClicked"/>
-        </RadioGroup>
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:text="Note"
+                android:fontFamily="sans-serif"
+                android:textSize="18sp"
+                android:textColor="?attr/editTextColor"/>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textShortMessage|textCapSentences"
+                android:ems="10"
+                android:hint="Note"
+                android:layout_alignParentLeft="true"
+                android:id="@+id/note" />
+        </TableRow>
+    </TableLayout>
 
-    </LinearLayout>
-    <LinearLayout
-        android:id="@+id/linearLayoutAmount"
-        android:layout_below="@+id/linearLayoutCompat"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="@dimen/activity_horizontal_margin"
-            android:text="Amount"
-            android:fontFamily="sans-serif"
-            android:layout_gravity="left|center_vertical"
-            android:textSize="18sp"
-            android:textColor="?attr/editTextColor"/>
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:inputType="numberDecimal"
-            android:digits="0123456789,."
-            android:ems="6"
-            android:id="@+id/amount"
-            android:hint="Amount"
-            android:maxLines="1"
-            android:maxLength="12"
-            android:layout_gravity="left|center_vertical"
-            android:selectAllOnFocus="true">
-
-            <requestFocus/>
-        </EditText>
-        <View
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
-        <android.support.design.widget.FloatingActionButton xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/fabSave"
-            app:fabSize="normal"
-            android:tint="@android:color/white"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:layout_gravity="right|center_vertical"
-            android:clickable="true"
-            android:src="@drawable/ic_done_white_24dp" />
-    </LinearLayout>
-    <DatePicker
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/linearLayoutAmount"
-        android:layout_above="@+id/linearLayoutNote"
-        android:ems="10"
-        android:hint="Date"
-        android:calendarViewShown="false"
-        android:datePickerMode="spinner"
-        android:descendantFocusability="blocksDescendants"
-        android:id="@+id/date" />
-    <LinearLayout
-        android:id="@id/linearLayoutNote"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="@dimen/activity_horizontal_margin"
-            android:text="Note"
-            android:fontFamily="sans-serif"
-            android:layout_gravity="left|center_vertical"
-            android:textSize="18sp"
-            android:textColor="?attr/editTextColor"/>
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textShortMessage|textCapSentences"
-            android:ems="10"
-            android:hint="Note"
-            android:layout_alignParentLeft="true"
-            android:id="@+id/note" />
-    </LinearLayout>
 </RelativeLayout>
 

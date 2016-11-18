@@ -61,7 +61,21 @@ public class CategoryViewModel {
         assert rowsDeleted == 1 : "category table delete primary key violation";
     }
 
-    public long putCategory(Category category) {
+    private boolean duplicate(Category category) {
+        List<Category> categories = getCategories(category.getCategoryType());
+        for (Category c : categories) {
+            if (c.getName().compareToIgnoreCase(category.getName()) == 0) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public Long putCategory(Category category) {
+        if (duplicate(category)) {
+            return null;
+        }
+
         ContentValues values = new ContentValues();
 
         values.put(ExpenseContract.CategoryTable.COLUMN_NAME_CATEGORY_TYPE, category.getCategoryType().getValue());
@@ -72,7 +86,10 @@ public class CategoryViewModel {
         return Long.parseLong(uri.getLastPathSegment());
     }
 
-    public void updateCategory(Category category) {
+    public boolean updateCategory(Category category) {
+        if (duplicate(category)) {
+            return false;
+        }
         ContentValues values = new ContentValues();
 
         String selectionClause = ExpenseContract.CategoryTable._ID +  "= ?";
@@ -85,5 +102,7 @@ public class CategoryViewModel {
         Uri uri = ContentUris.withAppendedId(CategoryProvider.CATEGORY_CONTENT_URI, category.getId());
         int rowsUpdated = mContext.getContentResolver().update(uri, values, selectionClause, selectionArgs);
         assert rowsUpdated == 1 : "category table update primary key violation";
+
+        return true;
     }
 }

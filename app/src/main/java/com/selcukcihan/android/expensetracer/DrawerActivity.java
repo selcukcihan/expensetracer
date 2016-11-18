@@ -12,16 +12,22 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
 
+import com.selcukcihan.android.expensetracer.viewmodel.IInputObserver;
+
 /**
  * Created by SELCUKCI on 31.10.2016.
  */
 
-public abstract class DrawerActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public abstract class DrawerActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, IInputObserver {
     private ActionBarDrawerToggle mDrawerToggle;
     private NavigationView mNavigationView;
     private DrawerLayout mFullView;
     private Toolbar mToolbar;
     private int mSelectedDrawerItem;
+
+    public void inputChanged() {
+
+    }
 
     @Override
     public void setContentView(@LayoutRes int layoutResID)

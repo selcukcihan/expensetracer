@@ -25,6 +25,7 @@
     <color name="colorGreenish">#DCE775</color>
     <color name="colorYellow">#FFEB3B</color>
     <color name="colorBrownish">#8D6E63</color>
+    <color name="colorTransparent">#FFFFFFFF</color>
 
     <array name="category_colors">
         <item>@color/colorAccent</item>

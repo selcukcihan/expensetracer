@@ -15,15 +15,19 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>-->
         </activity>
-        <activity android:name=".CategorySelectionActivity" ><!--
+        <activity android:name=".CategorySelectionActivity" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".CategoryActivity" ><!--
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>-->
-        </activity>
-        <activity android:name=".CategoryActivity" >
-
         </activity>
         <activity android:name=".ListActivity" ><!--
             <intent-filter>
@@ -33,11 +37,11 @@
             </intent-filter>-->
         </activity>
         <activity android:name=".ReportActivity" >
-            <intent-filter>
+            <!--<intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            </intent-filter>-->
         </activity>
 
         <provider android:name="com.selcukcihan.android.expensetracer.db.CategoryProvider" android:authorities="com.selcukcihan.android.expensetracer.categoryprovider"/>

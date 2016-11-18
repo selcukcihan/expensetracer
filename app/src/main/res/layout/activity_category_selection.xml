@@ -24,30 +24,47 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
-    <LinearLayout
+    <RelativeLayout
         android:id="@id/footer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:orientation="horizontal">
         <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left|center_vertical"
-            android:layout_weight="1"
-            android:orientation="vertical">
-
-            <RadioButton android:id="@+id/btnExpenseType"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            android:layout_height="30dp"
+            android:layout_width="150dp"
+            android:layout_marginRight="5dp"
+            android:layout_centerVertical="true"
+            android:background="@drawable/radio_background"
+            android:orientation="horizontal">
+            <RadioButton
+                android:id="@+id/btnExpenseType"
+                android:layout_marginBottom="@dimen/transaction_type_radio_margin"
+                android:layout_marginTop="@dimen/transaction_type_radio_margin"
+                android:layout_marginLeft="@dimen/transaction_type_radio_margin"
+                android:background="@drawable/radio_background_toggle"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:onClick="onRadioButtonClicked"
+                android:button="@null"
+                android:gravity="center"
                 android:text="Expense"
-                android:onClick="onRadioButtonClicked"/>
-
-            <RadioButton android:id="@+id/btnIncomeType"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:textColor="@color/colorWhite" />
+            <RadioButton
+                android:id="@+id/btnIncomeType"
+                android:layout_marginBottom="@dimen/transaction_type_radio_margin"
+                android:layout_marginTop="@dimen/transaction_type_radio_margin"
+                android:layout_marginRight="@dimen/transaction_type_radio_margin"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:onClick="onRadioButtonClicked"
+                android:background="@drawable/radio_background_toggle"
+                android:button="@null"
+                android:gravity="center"
                 android:text="Income"
-                android:onClick="onRadioButtonClicked"/>
+                android:textColor="@color/colorWhite" />
         </RadioGroup>
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fabNew"
@@ -56,8 +73,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
-            android:layout_gravity="right|center_vertical"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
             android:clickable="true"
             android:src="@android:drawable/ic_input_add" />
-    </LinearLayout>
+    </RelativeLayout>
 </RelativeLayout>
